@@ -27,17 +27,7 @@ Hi I'm Kim HoHyeon and I'm working in Busan with development.
 
     3. [React](https://github.com/JinhuiStudy/react-project-codal)
 
-🌱 현재 배우고 있는 것: **새로운 기술/언어**
 
-🔭 최근 작업 중인 프로젝트: **프로젝트 이름**
-
-📫 연락처: [이메일 주소]
-
-🌐 웹사이트: [개인 웹사이트 URL]
-
-👩‍💻 GitHub: [GitHub 계정 URL]
-
-👉 LinkedIn: [LinkedIn 프로필 URL]
 
 
 ---
@@ -132,7 +122,7 @@ Hi I'm Kim HoHyeon and I'm working in Busan with development.
 <br />
 
 ###  구인구직 프로젝트 (Rest Api)<br />
-![img_2.png](img_2.png)
+![img.png](img.png)
 
 - **분류:** 미니 팀 프로젝트(4인)<br />
 - **기간:** 2023.03.20 ~ 2023.03.27(1주)
@@ -163,16 +153,71 @@ Hi I'm Kim HoHyeon and I'm working in Busan with development.
 
 <br>
 - **주요 기능:** <br>
-  등록된 공간 목록 조회<br>
-  키워드와 카테고리로 특정한 공간 조회<br>
-  내 주변 지도에서 등록된 공간 조회<br>
-  로그인된 유저로 공간 예약<br>
-  호스트가 승인하면 공간 결제(Bootpay)<br>
-  유저의 예약 및 결제 내역 확인<br>
-  일반 유저의 호스트 신청<br>
-  호스트의 공간 등록 기능<br>
-  예약이나 결제 시 호스트에게 FCM 알림<br>
-  관리자가 호스트 신청, 공간, 유저, 예약, 결제 관리<br> 
+ <details>
+  <summary>REST API</summary>
+  <ul>
+  <br>
+    <li>MyBatis ORM 구현</li>
+    <li>RESTful URI 설계</li>
+    <li>JSON 데이터 요청, 응답 구현</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>Junit TEST</summary>
+  <ul>
+  <br>
+    <li>전체 Controller 테스트 완료</li>
+    <li>JWT 테스트 완료</li>
+    <li>SALT 암호화 테스트 완료</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>JWT</summary>
+  <ul>
+  <br>
+    <li>JWT 기반 Stateless 서버 구축</li>
+    <li>WhiteURLList 구현</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>OAuth</summary>
+  <ul>
+  <br>
+    <li>OAuth 카카오 로그인 구현</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>AOP</summary>
+  <ul>
+  <br>
+    <li>AOP 인증 처리 구현</li>
+    <li>AOP 인가 처리 구현</li>
+    <li>HandlerMethodArgumentResolver 사용하여 매개변수 값 주입 구현</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>Interceptor</summary>
+  <ul>
+  <br>
+    <li>요청 응답 후 세션 만료화 구현</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>Filter</summary>
+  <ul>
+  <br>
+    <li>Filter단에서 JWT 검증 처리</li>
+  <br>
+  </ul>
+</details>
+
+<br>
 
 - **프로젝트 자세히 보기:** [Readme Rest 프로젝트](HigherRest.md)<br />
 
@@ -212,16 +257,103 @@ Hi I'm Kim HoHyeon and I'm working in Busan with development.
 
 <br>
 - **주요 기능:** <br>
-  등록된 공간 목록 조회<br>
-  키워드와 카테고리로 특정한 공간 조회<br>
-  내 주변 지도에서 등록된 공간 조회<br>
-  로그인된 유저로 공간 예약<br>
-  호스트가 승인하면 공간 결제(Bootpay)<br>
-  유저의 예약 및 결제 내역 확인<br>
-  일반 유저의 호스트 신청<br>
-  호스트의 공간 등록 기능<br>
-  예약이나 결제 시 호스트에게 FCM 알림<br>
-  관리자가 호스트 신청, 공간, 유저, 예약, 결제 관리<br>
+<details>
+  <summary>로그인</summary>
+  <ul>
+  <br>
+    <li>로그인 기능</li>
+    <li>아이디 중복 체크 및 Password 중복 검사</li>
+    <li>비밀번호 HASH256, Salt 암호화</li>
+    <li>로그인 시 아이디 기억하기 기능(Cookie)</li>
+    <li>로그인 시 최초 접속 페이지 유지하기 기능</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>회원가입</summary>
+  <ul>
+  <br>
+    <li>회원가입 기능</li>
+    <li>회원가입 시 기술스택 선택 기능</li>
+    <li>회원정보 수정 기능</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>이력서</summary>
+  <ul>
+  <br>
+    <li>이력서 등록 기능</li>
+    <li>이력서 수정 기능</li>
+    <li>이력서 삭제 기능</li>
+    <li>이력서 선택해서 채용공고 지원하기, 지원 취소하기 기능</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>채용공고</summary>
+  <ul>
+  <br>
+    <li>채용공고 등록 기능</li>
+    <li>채용공고 수정 기능</li>
+    <li>채용공고 삭제 기능</li>
+    <li>채용공고 제목, 내용으로 검색 기능</li>
+    <li>채용공고 카테고리별 검색 기능</li>
+    <li>마감일자 기능</li>
+    <li>공고 등록시 기술스택 선택 기능</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>북마크</summary>
+  <ul>
+  <br>
+    <li>북마크하기 기능</li>
+    <li>북마크 취소하기 기능</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>기업 마이페이지</summary>
+  <ul>
+  <br>
+    <li>나의 기업 정보</li>
+    <li>지원자 현황 보기(지원자 개인정보와 이력서 열람 기능)</li>
+    <li>지원자 합격/불합격 처리하기(마이페이지 동기화 기능)</li>
+    <li>나를 북마크한 회원 보기</li>
+    <li>기술스택 기준 구직자 매칭서비스</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>개인 마이페이지</summary>
+  <ul>
+  <br>
+    <li>나의 회원 정보</li>
+    <li>나의 지원 현황 보기/지원 취소하기 기능</li>
+    <li>내가 북마크한 기업 보기</li>
+    <li>기술스택 기준 기업 매칭서비스</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>알림 기능</summary>
+  <ul>
+  <br>
+    <li>SSE 통신으로 서류 발표 알림 기능</li>
+  <br>
+  </ul>
+</details>
+<details>
+  <summary>Redis</summary>
+  <ul>
+  <br>
+    <li>Redis 세션 DB 구현</li>
+  <br>
+  </ul>
+</details>
+
+<br>
 
 - **프로젝트 자세히 보기:** [Readme 프로젝트](Higher.md)<br />
 
@@ -235,4 +367,11 @@ Hi I'm Kim HoHyeon and I'm working in Busan with development.
 ![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Khohyeon&layout=compact&theme=radical)
 
 ---
+
+🔭 최근 작업 중인 프로젝트: **프로젝트 이름**
+
+📫 연락처: khh5762@naver.com
+
+👩‍💻 GitHub: https://github.com/Khohyeon
+
 
