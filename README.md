@@ -27,10 +27,6 @@ Hi I'm Kim HoHyeon and I'm working in Busan with development.
 
     3. [React](https://github.com/JinhuiStudy/react-project-codal)
 
-# 안녕하세요! [미친개발자]입니다. 👋
-
-저는 [당신의 직업/직위]로서 [회사/기관/프리랜서]에서 일하고 있습니다. 저는 주로 [사용하는 기술/언어]를 사용하여 [관심 분야]에 대한 프로젝트를 진행합니다.
-
 🌱 현재 배우고 있는 것: **새로운 기술/언어**
 
 🔭 최근 작업 중인 프로젝트: **프로젝트 이름**
@@ -43,30 +39,6 @@ Hi I'm Kim HoHyeon and I'm working in Busan with development.
 
 👉 LinkedIn: [LinkedIn 프로필 URL]
 
-## 나의 스킬셋 🚀
-
-### 언어
-- [언어1]
-- [언어2]
-- [언어3]
-
-### 프레임워크 및 라이브러리
-- [프레임워크/라이브러리1]
-- [프레임워크/라이브러리2]
-- [프레임워크/라이브러리3]
-
-### 도구 및 기술
-- [도구/기술1]
-- [도구/기술2]
-- [도구/기술3]
-
-## 최근 GitHub 활동 📊
-
-![Your GitHub Stats](https://github-readme-stats.vercel.app/api?username=Khohyeon&show_icons=true&theme=radical)
-
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Khohyeon&layout=compact&theme=radical)
-
----
 
 ---
 
@@ -209,8 +181,7 @@ Hi I'm Kim HoHyeon and I'm working in Busan with development.
 
 ###  구인구직 프로젝트 <br />
 
-[//]: # (![village-sample]&#40;https://github.com/clean17/clean17.github.io/assets/118657689/2aef4ac3-8c93-4a97-997a-30290b98f5ce&#41;)
-![img_1.png](img_1.png)
+![image](https://github.com/Khohyeon/Khohyeon.github.io/assets/122351733/27d8b0b2-eac7-4ec5-b290-a070251a39c5)
 
 - **분류:** 미니 팀 프로젝트(4인)<br />
 - **기간:** 2023.02.20 ~ 2023.03.10(3주)
@@ -255,4 +226,13 @@ Hi I'm Kim HoHyeon and I'm working in Busan with development.
 - **프로젝트 자세히 보기:** [Readme 프로젝트](Higher.md)<br />
 
 <br />
+
+
+## 최근 GitHub 활동 📊
+
+![Your GitHub Stats](https://github-readme-stats.vercel.app/api?username=Khohyeon&show_icons=true&theme=radical)
+
+![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Khohyeon&layout=compact&theme=radical)
+
+---
 
