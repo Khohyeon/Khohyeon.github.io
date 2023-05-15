@@ -3,47 +3,8 @@ Hi I'm Kim HoHyeon and I'm working in Busan with development.
 </br></br>
 [![NOTION](https://img.shields.io/badge/-NOTION-222222?style=for-the-badge&logo=NOTION)](https://www.notion.so/f503f6f26b7c4a589ee379b27444f078?pvs=2)
 
----
-
-<!--START_SECTION:Skills & Endorsements-->
-### Skills & Reference
-
-![JAVA](https://img.shields.io/badge/-JAVA-222222?style=for-the-badge&logo=JAVA)
-![JAVASCRIPT](https://img.shields.io/badge/-JAVASCRIPT-222222?style=for-the-badge&logo=JAVASCRIPT)
-![FlUTTER](https://img.shields.io/badge/-FlUTTER-222222?style=for-the-badge&logo=FlUTTER)
-![SPRINGBOOT](https://img.shields.io/badge/-SPRINGBOOT-222222?style=for-the-badge&logo=SPRINGBOOT)
-![SPRINGBOOT](https://img.shields.io/badge/-MYSQL-222222?style=for-the-badge&logo=MYSQL)
-![SPRINGBOOT](https://img.shields.io/badge/-MYSQL-222222?style=for-the-badge&logo=MYSQL)
----
-
-### Side Project
-
-1. project
-    1. [SpringBoot - project](https://github.com/Khohyeon/Springboot-MyBatis-Recruitment-Project)
-    2. [SpringBoot - project - RestAPI](https://github.com/Khohyeon/Springboot-MyBatis-Recruitment-Project-V2-RestAPI)
-    3. [SpringBoot - project - Final ](https://github.com/Khohyeon/Village-Back-Project)
-2. Codal
-    1. [Flutter](https://github.com/JinhuiStudy/flutter-project-codal)
-
-    3. [React](https://github.com/JinhuiStudy/react-project-codal)
-
-
-
-
----
-
-### 🔥 최근 GitHub 활동
-
-![Your GitHub Stats](https://github-readme-stats.vercel.app/api?username=YOUR_GITHUB_USERNAME&show_icons=true&theme=dracula)
-
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR_GITHUB_USERNAME&layout=compact&theme=dracula)
-
-
 ### JAVA/SPRING <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
 안녕하십니까 신입 개발자 김호현입니다.
----
-
-[![NOTION](https://img.shields.io/badge/-NOTION-222222?style=for-the-badge&logo=NOTION)](https://www.notion.so/f503f6f26b7c4a589ee379b27444f078?pvs=2)
 ---
 
 ## **🛠 기술 스택**
