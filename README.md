@@ -86,17 +86,7 @@
 - **분류:** 미니 팀 프로젝트(4인)<br />
 - **기간:** 2023.03.20 ~ 2023.03.27(1주)
   <br />
-- **사용 기술:** ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
-  ![Java](https://img.shields.io/badge/Java-007396?style=flat-square&logo=java&logoColor=white)
-  ![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat-square&logo=dart&logoColor=white)
-  ![Riverpod](https://img.shields.io/badge/Riverpod-0D47A1?style=flat-square&logo=riverpod&logoColor=white)
-  ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=spring-boot&logoColor=white)
-  ![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=flat-square&logo=spring&logoColor=white)
-  ![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=flat-square&logo=mariadb&logoColor=white)
-  ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white)
-  ![EC2](https://img.shields.io/badge/Amazon_EC2-232F3E?style=flat-square&logo=amazon-aws&logoColor=white)
-  ![JUnit](https://img.shields.io/badge/JUnit5-25A162?style=flat-square&logo=junit5&logoColor=white)<br>
-
+- **사용 기술:** 
   <br>
   <img src="https://img.shields.io/badge/JDK-11-007396?style=for-the-badge&logo=java&logoColor=white"><br><img src="https://img.shields.io/badge/Springboot-6DB33F?style=for-the-badge&logo=Springboot&logoColor=white">
   <br>
@@ -190,17 +180,7 @@
 - **분류:** 미니 팀 프로젝트(4인)<br />
 - **기간:** 2023.02.20 ~ 2023.03.10(3주)
   <br />
-- **사용 기술:** ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat-square&logo=flutter&logoColor=white)
-  ![Java](https://img.shields.io/badge/Java-007396?style=flat-square&logo=java&logoColor=white)
-  ![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat-square&logo=dart&logoColor=white)
-  ![Riverpod](https://img.shields.io/badge/Riverpod-0D47A1?style=flat-square&logo=riverpod&logoColor=white)
-  ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=spring-boot&logoColor=white)
-  ![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=flat-square&logo=spring&logoColor=white)
-  ![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=flat-square&logo=mariadb&logoColor=white)
-  ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white)
-  ![EC2](https://img.shields.io/badge/Amazon_EC2-232F3E?style=flat-square&logo=amazon-aws&logoColor=white)
-  ![JUnit](https://img.shields.io/badge/JUnit5-25A162?style=flat-square&logo=junit5&logoColor=white)<br>
-
+- **사용 기술:** 
   <br>
   <img src="https://img.shields.io/badge/JDK-11-007396?style=for-the-badge&logo=java&logoColor=white"><br><img src="https://img.shields.io/badge/Springboot-6DB33F?style=for-the-badge&logo=Springboot&logoColor=white">
   <br>
