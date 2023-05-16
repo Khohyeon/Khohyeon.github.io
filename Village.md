@@ -56,20 +56,21 @@ https://www.youtube.com/watch?v=X2QB7HTBATU&ab_channel=%EB%A9%94%ED%83%80%EC%BD%
 > ## 기술 스택
 
 ### 개발 툴<br>
-![image](https://github.com/clean17/Village-Front-Project/assets/118657689/2a81747e-306b-43e3-9fa1-9adebb8b91d6)
+
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/c0ebe32a-0db1-4b6e-8e3a-7744ad702753)
-![image](https://github.com/clean17/Village-Front-Project/assets/118657689/bf7cb8c5-c939-4a6f-9f2e-805d6f97d998) <br>
+
 ### 사용 언어<br>
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/272a1dca-de7f-4e0d-85e2-7713799e7790)
-![image](https://github.com/clean17/Village-Front-Project/assets/118657689/071484dd-acad-49b8-ae4a-7c896be725e6) <br>
+
 ### DB<br>
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/a439e899-0ceb-44b5-9f88-2f648a31128f)
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/546e397b-2d5a-4f70-b3f4-d6a46e1f8d7d) <br>
+
 ### 프레임워크<br>
-![image](https://github.com/clean17/Village-Front-Project/assets/118657689/8271db90-91f8-49ef-8cfd-0ca4d7765dd6)
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/11426330-7c5f-4fd1-b0f4-16f30896867d) <br>
+
 ### 사용 기술<br>
-![image](https://github.com/clean17/Village-Front-Project/assets/118657689/94477bce-d09c-4ca9-b30c-0972771f7502)
+
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/6dc90d44-5af6-474b-b922-eb4e92bdad2e)
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/8d72bc2e-fbc0-4f3c-baa7-8950fab14bd3)
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/5841bee3-7aeb-4d1e-854b-07dce6bbeb29) <br>
@@ -87,14 +88,17 @@ https://www.youtube.com/watch?v=X2QB7HTBATU&ab_channel=%EB%A9%94%ED%83%80%EC%BD%
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/30dccaf8-feff-459c-bb32-c7e857141b6b)
 
 
-> ## 내가 한 일
+> ## 내가 한 기능
 
 ### FCM : Firebase Cloud Message
-  firebase의 FCM을 이용하여 예약 및 결제시 알림이 가는 기능을 구현 <br>
+  Firebase의 FCM을 이용하여 예약 및 결제시 HOST의 앱으로 알림기능을 구현 <br>
 -> FCM을 사용한 이유는 실시간으로 메시지 전송을 지원을 하여 사용자에게 빠르게 알림을 전송할 수 있고 예약과 결제 같이 예민할 수 있는 부분이 있는 기능에는 이런 
-실시간 통신이 필요한 어플리케이션에 적합 하다고 생각을 함<br>
--> 앱에서 서버를 작동 할 때 토큰을 받아 DB에 저장을 시킨 후 로그인 시 토큰이 맞는지 확인을 하고 그 토큰을 이용하여 알림을 띄운다. <br>
--> 예약신청 및 결제신청 할 때 Fcm을 사용하여 HOST에게 알림을 보내는 기능 구현 <br>
+실시간 알림이 필요한 어플리케이션에 적합 하다고 생각을 함<br>
+-> 앱을 처음 킬 때 토큰을 서버가 받아 DB에 저장을 시켜 토큰 값을 보관<br>
+  그 이유는 각 사용자에게 고유한 FCM 토큰을 부여 하고 이 토큰을 DB에 저장하면 개별 사용자를 식별하고 관리 가능 <br> 
+-> 토큰의 유효성 검사를 하기위해 로그인 시 토큰이 맞는지 확인을 함 <br>
+-> 그 토큰을 firebase의 플랫폼으로 메시지를 전송을 한 후 전송 받은 데이터를 앱에 전달 하고 앱으로 알림을 띄운다. <br>
+-> 예약신청 및 결제신청 할 때 위의 과정을 이용해서 HOST에게 알림을 보내는 기능 구현 <br>
  
 ### AWS S3  
 S3를 이용하여 파일을 AWS 나의 버킷에 저장을 하여 url을 이용하여 앱과의 통신 <br>
@@ -102,7 +106,7 @@ S3를 이용하여 파일을 AWS 나의 버킷에 저장을 하여 url을 이용
 데이터의 증가나 변화에 따라 유연하게 대응할 수 있다는 점에서 사용 <br>
 -> 공간등록, 유저프로필 수정과 같은 이미지 나 파일을 등록 할 때 S3의 버킷에 저장하여 사용
 
-### Bootpay
+### BootPay
 결제 모듈을 부트페이를 사용해봤고 결제 검증을 하여 부적절한 요청이 왔을 때 해결 <br>
 -> 앱에서 결제를 시도 할 때 받아오는 데이터를 DB에 저장 <br>
 -> 실제 결제가 마무리가 됐을 때 DB에 있던 데이터와 비교를 하여 값이 맞다면 결제를 할 수 있게 구현
@@ -138,8 +142,6 @@ S3를 이용하여 파일을 AWS 나의 버킷에 저장을 하여 url을 이용
 <br>
 
 > ## 서버 의존성 주입
-
-
 
 
 <br>
