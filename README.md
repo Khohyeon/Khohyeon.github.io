@@ -3,7 +3,13 @@
 </br></br>
 [![NOTION](https://img.shields.io/badge/-NOTION-222222?style=for-the-badge&logo=NOTION)](https://www.notion.so/f503f6f26b7c4a589ee379b27444f078?pvs=2)
 
+## 최근 GitHub 활동 📊
 
+![Your GitHub Stats](https://github-readme-stats.vercel.app/api?username=Khohyeon&show_icons=true&theme=radical)
+
+![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Khohyeon&layout=compact&theme=radical)
+
+---
 
 ## **🛠 기술 스택**
 
@@ -299,13 +305,7 @@
 <br />
 
 
-## 최근 GitHub 활동 📊
 
-![Your GitHub Stats](https://github-readme-stats.vercel.app/api?username=Khohyeon&show_icons=true&theme=radical)
-
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Khohyeon&layout=compact&theme=radical)
-
----
 
 🔭 최근 작업 중인 프로젝트: **프로젝트 이름**
 
