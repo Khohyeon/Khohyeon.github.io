@@ -63,6 +63,9 @@
   ![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=flat-square&logo=mariadb&logoColor=white)
   ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white)
   ![EC2](https://img.shields.io/badge/Amazon_EC2-232F3E?style=flat-square&logo=amazon-aws&logoColor=white)
+  ![S3](https://img.shields.io/badge/Amazon_S3-232F3E?style=flat-square&logo=amazon-aws&logoColor=white)
+  ![Bootpay](https://img.shields.io/badge/Bootpay-FFDD00?style=flat-square&logo=bootpay&logoColor=black)
+  ![FCM](https://img.shields.io/badge/FCM-FFCA28?style=flat-square&logo=firebase&logoColor=black)
   ![JUnit](https://img.shields.io/badge/JUnit5-25A162?style=flat-square&logo=junit5&logoColor=white)<br>
 
 - **주요 기능:** <br>
@@ -168,7 +171,7 @@
 
 <br>
 
-- **프로젝트 자세히 보기:** [Readme Rest 프로젝트](HigherRest.md)<br />
+- **프로젝트 자세히 보기:** [Higher Rest 프로젝트](HigherRest.md)<br />
 
 <br />
 
@@ -294,7 +297,7 @@
 
 <br>
 
-- **프로젝트 자세히 보기:** [Readme 프로젝트](Higher.md)<br />
+- **프로젝트 자세히 보기:** [Higher 프로젝트](Higher.md)<br />
 
 <br />
 

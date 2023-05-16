@@ -87,8 +87,37 @@ https://www.youtube.com/watch?v=X2QB7HTBATU&ab_channel=%EB%A9%94%ED%83%80%EC%BD%
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/30dccaf8-feff-459c-bb32-c7e857141b6b)
 
 
+> ## 내가 한 일
+
+### FCM : Firebase Cloud Message
+  firebase의 FCM을 이용하여 예약 및 결제시 알림이 가는 기능을 구현 <br>
+-> FCM을 사용한 이유는 실시간으로 메시지 전송을 지원을 하여 사용자에게 빠르게 알림을 전송할 수 있고 예약과 결제 같이 예민할 수 있는 부분이 있는 기능에는 이런 
+실시간 통신이 필요한 어플리케이션에 적합 하다고 생각을 함<br>
+-> 앱에서 서버를 작동 할 때 토큰을 받아 DB에 저장을 시킨 후 로그인 시 토큰이 맞는지 확인을 하고 그 토큰을 이용하여 알림을 띄운다. <br>
+-> 예약신청 및 결제신청 할 때 Fcm을 사용하여 HOST에게 알림을 보내는 기능 구현 <br>
+ 
+### AWS S3  
+S3를 이용하여 파일을 AWS 나의 버킷에 저장을 하여 url을 이용하여 앱과의 통신 <br>
+-> S3를 사용한 이유는 안정적이고 신뢰할 수 있는 서비스로 인정받고 있다고 하여 사용을 해봤고 사용량에 따라 자동으로 확장되어
+데이터의 증가나 변화에 따라 유연하게 대응할 수 있다는 점에서 사용 <br>
+-> 공간등록, 유저프로필 수정과 같은 이미지 나 파일을 등록 할 때 S3의 버킷에 저장하여 사용
+
+### Bootpay
+결제 모듈을 부트페이를 사용해봤고 결제 검증을 하여 부적절한 요청이 왔을 때 해결 <br>
+-> 앱에서 결제를 시도 할 때 받아오는 데이터를 DB에 저장 <br>
+-> 실제 결제가 마무리가 됐을 때 DB에 있던 데이터와 비교를 하여 값이 맞다면 결제를 할 수 있게 구현
+
+### Restdocs 
+통합 테스트를 작성하여 Restdocs를 이용하여 API 문서화를 시켜 봄 <br>
+-> swagger 와 restdocs는 똑같이 API 문서화를 시키지만 Restdocs를 사용한
+가장 큰 이유라고 하면 통합테스트를 이용하여 Controller의 에러를 잡을 수 있고 효율적으로 문서화를 할 수 있었기에 사용  <br>
+-> Rest API를 사용하여 통신을 하기 때문에 문서화를 위해 통합 테스트를 구현 <br>
+-> restdocs gradle 세팅 후 Bootjar로 구어서 문서화 시킴 <br>
 
 
+### 관리자 페이지 
+관리자 페이지를 만들어 유저,공간의 활성화 및 예약, 결제 내역을 취소할 수 있게 구현을 했고
+유저가 HOST 신청을 했을 때 관리자의 승인을 통해서 Role 변경을 시키는 기능 구현
 <br>
 
 > ## 기능정리
@@ -98,7 +127,7 @@ https://www.youtube.com/watch?v=X2QB7HTBATU&ab_channel=%EB%A9%94%ED%83%80%EC%BD%
 - 카테고리 검색 조회
 - 내 주변 지도에서 등록된 공간 조회
 - 로그인된 유저로 공간 예약
-- 호스트가 승인하면 공간 결제(Bootpay)
+- 호스트가 승인하면 공간 결제(BootPay)
 - 일반 유저의 호스트 신청
 - 호스트의 공간 등록 기능
 - 예약 및 결제 내역 확인
@@ -108,40 +137,10 @@ https://www.youtube.com/watch?v=X2QB7HTBATU&ab_channel=%EB%A9%94%ED%83%80%EC%BD%
 
 <br>
 
-> ## 플러터 의존성 주입
+> ## 서버 의존성 주입
 
-```
-  cupertino_icons: ^1.0.2
-  intl: ^0.18.0
-  animated_text_kit: ^4.2.2
-  animate_do: ^3.0.2
-  dio: ^5.1.1
-  flutter_riverpod: ^2.3.2
-  riverpod: ^2.3.6
-  font_awesome_flutter: ^9.0.0
-  lottie: ^2.3.2
-  http: ^0.13.5
-  geolocator: ^9.0.2
-  fluttertoast: ^8.2.1
-  motion_toast: ^2.6.6
-  remedi_kopo: ^0.0.2
-  image_picker: ^0.8.7+3
-  google_maps_flutter: ^2.2.5
-  validators: ^3.0.0
-  logger: ^1.1.0
-  flutter_secure_storage: ^7.0.0
-  flutter_swiper_null_safety: ^1.0.2
-  bootpay: ^4.6.1
-  api_provider_builder: ^1.0.4
-  firebase_messaging: ^14.4.1
-  scrollable_positioned_list: ^0.3.5
-  async: ^2.10.0
-  firebase_core: ^2.10.0
-  provider: ^6.0.5
-  cached_network_image: ^3.2.3
-  flutter_html: ^2.2.1
-  badges: ^3.1.1
-```
+
+
 
 <br>
 
