@@ -1,7 +1,6 @@
 ### JAVA/SPRING <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
 ## 안녕하십니까 신입 개발자 김호현입니다.
-</br></br>
-[![NOTION](https://img.shields.io/badge/-NOTION-222222?style=for-the-badge&logo=NOTION)](https://www.notion.so/f503f6f26b7c4a589ee379b27444f078?pvs=2)
+
 
 ## 최근 GitHub 활동 📊
 
@@ -305,9 +304,7 @@
 
 - **프로젝트 자세히 보기:** [Higher 프로젝트](Higher.md)<br />
 
-<br />
-
-
+</br>
 
 
 🔭 최근 작업 중인 프로젝트: **프로젝트 이름**
@@ -316,4 +313,6 @@
 
 👩‍💻 GitHub: https://github.com/Khohyeon
 
+📋 노션 링크 : <BR> <BR>
+[![NOTION](https://img.shields.io/badge/-NOTION-222222?style=for-the-badge&logo=NOTION)](https://www.notion.so/f503f6f26b7c4a589ee379b27444f078?pvs=2)
 

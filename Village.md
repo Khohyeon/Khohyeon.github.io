@@ -36,14 +36,6 @@ https://www.youtube.com/watch?v=X2QB7HTBATU&ab_channel=%EB%A9%94%ED%83%80%EC%BD%
 
 > ## 팀원 소개
 
-### Front-End
-|                                                 박인우(팀장)                                                  |                                                 이인화                                                  |
-| :-----------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: | 
-| <img src="https://github.com/clean17/Village-Front-Project/assets/118657689/c0efe9a4-72b3-4d2b-89b8-ff8a7d9b7598" alt="profile" width="100" height="100"> | [<img src="https://avatars.githubusercontent.com/u/122412968?v=4" alt="profile" width="100" height="100">](https://avatars.githubusercontent.com/u/122351923?v=4) | 
-|                                   [@clean17](https://github.com/clean17)                                   |                                 [@01LeeInhwa](https://github.com/01LeeInhwa)                                 |
-
-<br>
-
 ### Back-End
 
 |                                                 김호현                                                  |                                                 김정욱                                                  |
@@ -52,6 +44,16 @@ https://www.youtube.com/watch?v=X2QB7HTBATU&ab_channel=%EB%A9%94%ED%83%80%EC%BD%
 |                                   [@Khohyeon](https://github.com/Khohyeon)                               |                                 [@juk5009](https://github.com/juk5009)                                 |
 
 <br>
+
+### Front-End
+|                                                 박인우(팀장)                                                  |                                                 이인화                                                  |
+| :-----------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: | 
+| <img src="https://github.com/clean17/Village-Front-Project/assets/118657689/c0efe9a4-72b3-4d2b-89b8-ff8a7d9b7598" alt="profile" width="100" height="100"> | [<img src="https://avatars.githubusercontent.com/u/122412968?v=4" alt="profile" width="100" height="100">](https://avatars.githubusercontent.com/u/122351923?v=4) | 
+|                                   [@clean17](https://github.com/clean17)                                   |                                 [@01LeeInhwa](https://github.com/01LeeInhwa)                                 |
+
+<br>
+
+
 
 > ## 기술 스택
 
@@ -91,6 +93,7 @@ https://www.youtube.com/watch?v=X2QB7HTBATU&ab_channel=%EB%A9%94%ED%83%80%EC%BD%
 > ## 내가 한 기능
 
 ### FCM : Firebase Cloud Messaging - 구글제공 클라우드 메시징 서비스
+![img_2.png](img_2.png)
   Firebase의 FCM을 이용하여 예약 및 결제시 HOST의 앱으로 알림기능을 구현 <br>
 - FCM을 사용한 이유는 실시간으로 메시지 전송을 지원을 하여 사용자에게 빠르게 알림을 전송할 수 있고 예약과 결제 같이 예민할 수 있는 부분이 있는 기능에는 이런 
 실시간 알림이 필요한 어플리케이션에 적합 하다고 생각을 함<br>
@@ -110,17 +113,20 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 
 ### BootPay - 한국의 온라인 결제 서비스 플랫폼
 결제 모듈을 간편한 결제 플로우를 지닌 부트페이를 사용했고 결제 검증을 하여 부적절한 요청이 왔을 때 해결 <br>
-- 다른 결제 모듈 API가 존재하지만 BootPay를 사용한 이유는 다양한 결제 수단으로 사용자들이 편리하게 원하는 결제 수단을 선택하여 결제할 수 있고
-개발자 친화적 API를 제공 및 사용자 인터페이스와 결제 플로우를 쉽게 구현 가능 하여 선택 <br>
+- 다른 결제 모듈 API 가 존재하지만 BootPay 를 사용한 이유는 다양한 결제 수단으로 사용자들이 편리하게 원하는 결제 수단을 선택하여 결제할 수 있고
+개발자 친화적 API 를 제공 및 사용자 인터페이스와 결제 플로우를 쉽게 구현 가능 하여 선택 <br>
 - 앱에서 결제를 시도 할 때 받아오는 데이터를 DB에 저장을 하여 실제 결제 완료 정보와 비교를 하여 결제가 성공적으로 이루어 졌는지 여부를 알기 위해 저장 <br>
 - 실제 결제가 마무리가 됐을 때 DB에 있던 데이터와 비교를 하여 값이 맞다면 결제를 할 수 있게 사용 <br>
 - 만약 결제 시도 후 발생하는 오류 정보를 서버에 전송하여 관리하면 문제가 발생했을 때 신속하게 대응할 수 있도록 사용
 
 ### Restdocs - Restful API 문서화를 돕는 기술
-통합 테스트를 작성하여 Restdocs를 이용하여 API 문서화를 시켜 봄 <br>
-- swagger 와 restdocs는 똑같이 API 문서화를 시키지만 Restdocs를 사용한
-가장 큰 이유라고 하면 통합테스트를 이용하여 Controller의 에러를 잡을 수 있고 효율적으로 문서화를 할 수 있었기에 사용  <br>
-- Rest API를 사용하여 통신을 하기 때문에 문서화를 위해 통합 테스트를 구현 <br>
+통합 테스트를 작성하여 Restdocs 를 이용하여 API 문서화를 시켜 봄 <br>
+- swagger 와 restdocs 는 똑같이 API 문서화를 시키지만 Restdocs 를 사용한
+가장 큰 이유라고 하면 통합테스트를 이용하여 Controller 의 에러를 잡을 수 있고 효율적으로 문서화를 할 수 있었기에 사용  <br>
+- swagger 는 주석 기반으로 API 설명을 작성하면 API 코드와 문서가 함께 유지되므로, API 의 동작과 관련된 정보를 쉽게 확인 할 수 있고 백엔드 에서 작업을 할 때 API 코드를 작성하면서
+동시에 문서도 작성 할 수 있음 <br>
+-> swagger 의 장점을 restdocs 를 사용하면서 극복한 점 : 테스트 케이스를 실행하여 실제 동작하는 API 와 일치하는 정확한 문서를 생성
+- Rest API 를 사용하여 통신을 하기 때문에 문서화를 위해 통합 테스트를 구현 <br>
 - 테스트 코드에서 사용한 요청과 응답에 대한 문서 템플릿 작성 Asciidoctor 문법을 사용하여 문서를 스타일링 하고 필요한 형식을 출력 <br>
 - Rest Docs 사용함으로써 테스트 코드를 실행하여 실제 요청과 응답 결과를 문서에 포함시키기 때문에 이를 통해 정확하고 실제적인 예시를 문서로 제공을 함 <br>
 
@@ -138,11 +144,6 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 - 예약이나 결제시 호스트에게 FCM 알림
 - 관리자가 호스트 신청 관리
 - 관리자가 등록된 공간, 유저, 예약, 결제를 모두 관리
-
-<br>
-
-> ## 서버 의존성 주입
-
 
 <br>
 
@@ -187,14 +188,14 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 
 > ## 기술 블로그
 
+김호현 <br>
+https://oil-hail-ded.notion.site/f503f6f26b7c4a589ee379b27444f078<br>
+
 김정욱 <br>
 https://snapdragon-maple-d1e.notion.site/34fc09fac7684501a4a29bd6da6bb8b5<br>
 
 박인우 <br>
 https://velog.io/@merci/series/Flutter<br>
-
-김호현 <br>
-https://oil-hail-ded.notion.site/f503f6f26b7c4a589ee379b27444f078<br>
 
 이인화 <br>
 https://geode-krill-9ab.notion.site/Sliver-0fb83d2a0b7c4a069c73b3a2724a199a<br>
@@ -202,6 +203,25 @@ https://geode-krill-9ab.notion.site/Sliver-0fb83d2a0b7c4a069c73b3a2724a199a<br>
 <br>
 
 > ## 담당 기능
+
+김호현(백)
+- 호스트 신청
+- 공간 등록, 조회, 수정
+- 예약 신청
+- 알림 (FCM)
+- 결제 (BootPay)
+- 이미지 저장 (S3)
+- 관리자 페이지
+- RestDoc
+
+김정욱(백)
+- 로그인, 회원가입
+- 시큐리티, JWT 토큰
+- 메인 공간 조회
+- 공간 검색(키워드, 카테고리)
+- 공간 필터링(정렬)
+
+<br>
 
 박인우(프론트)
 
@@ -227,24 +247,7 @@ https://geode-krill-9ab.notion.site/Sliver-0fb83d2a0b7c4a069c73b3a2724a199a<br>
 - 공지사항
 
 
-김호현(백)
-- 호스트 신청
-- 공간 등록, 조회, 수정
-- 예약 신청
-- 알림 (FCM)
-- 결제 (Bootpay)
-- 이미지 저장 (S3)
-- 관리자 페이지
-- RestDoc
 
-김정욱(백)
-- 로그인, 회원가입
-- 시큐리티, JWT 토큰
-- 메인 공간 조회
-- 공간 검색(키워드, 카테고리)
-- 공간 필터링(정렬)
-
-<br>
 
 
 > ## 보완점
@@ -256,6 +259,11 @@ https://geode-krill-9ab.notion.site/Sliver-0fb83d2a0b7c4a069c73b3a2724a199a<br>
 <br>
 
 > ## 후기
+
+김호현
+- 프론트 와 백엔드로 나누어 프로젝트를 처음 해봤기에 소통을 하는 부분이 부족하다는 것을 느꼈습니다.
+- JPA 를 처음 사용하면서 처음에는 복잡하고 힘들다고 생각을 했지만 잘 이해를 하면 오히려 편하게 사용 할 수 있다고 생각이 들었고 무엇보다도 Restdocs 를 사용 하기 위해 Test 코드를 작성을 하며 좋은 결과를 이루었다.
+- FCM , AWS S3, BootPay, Restdocs 와 같은 여러 API 문서를 보면서 많이 공부를 하는 시간을 가진 것 같고 한편으로 많이 성장 하는 시간이었다고 생각합니다. 
 
 박인우
 - 프로젝트를 진행하면서 초기 계획과 많이 달라져 힘든 부분도 있었지만 조금 더 개발이라는 업무와 가까워진것 같다.
@@ -272,10 +280,6 @@ https://geode-krill-9ab.notion.site/Sliver-0fb83d2a0b7c4a069c73b3a2724a199a<br>
 - 배려심과 책임감이 강한 팀원들과 작업해서 저는 너무 행복하게 작업했습니다.
 - 6개월동안 저도 그렇고 모두들 쉴틈없이 작업했는데 다들 원하는 곳에 취업하고 좋은 결과 얻었으면 좋겠습니다
 
-
-김호현
-- 프론트 와 백엔드로 나누어 프로젝트를 처음 해봤기에 소통을 하는 부분이 부족하다는 것을 느꼈습니다.
-- JPA를 처음 사용하면서 처음에는 복잡하고 힘들다고 생각을 했지만 잘 이해를 하면 오히려 편하게 사용 할 수 있다고 생각이 들었고 무엇보다도 Restdoc을 사용 하기 위해 test코드를 작성을 하며 좋은 결과를 이루었다.
 
 
 
