@@ -97,6 +97,76 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 - 실제 결제가 마무리가 됐을 때 DB에 있던 데이터와 비교를 하여 값이 맞다면 결제를 할 수 있게 사용 <br>
 - 만약 결제 시도 후 발생하는 오류 정보를 서버에 전송하여 관리하면 문제가 발생했을 때 신속하게 대응할 수 있도록 사용
 
+> ### Swagger - API 문서화를 위한 오픈소스 프레임워크
+> ![img_10.png](img_10.png) <br>
+
+1. Spring에 Swagger 적용
+
+build.gradle 에 의존성 추가
+```java
+implementation 'org.springdoc:springdoc-openapi-ui:1.6.7'
+```
+2. Swagger UI 접속 방법 <br>
+   http://localhost:8080/swagger-ui/index.html#/ <br>
+    위의 주소로 접속을 하면 Swagger UI 화면이 나옴 <br>
+3. Swagger 어노테이션 종류 및 사용법
+![img_11.png](img_11.png) <br>
+- @Tag : Controller 클래스에 적용하며, Swagger 리소스에 대한 정보를 표현
+- @Operation : Controller 메소드에 적용하며, 개별 API에 대한 정보를 표현
+  ![img_12.png](img_12.png) <br>
+- Tag는 위 사진의 빨간 박스에 있는 명칭을 지정을 할 수 있는 것으로 name과 description으로 정리
+- Operation 은 파란 박스로 summary와 description으로 정리 가능
+4. Swagger UI 화면 정렬
+![img_13.png](img_13.png) <br>
+- 정렬이 되어있지 않은 화면을 정렬을 하기 위해서 Customizing 을 해야함
+- 시나리오를 작성하고 정렬을 하기 위해서는 SwaggerConfig 파일을 생성을 해야함
+```java
+@Bean
+public OpenApiCustomiser sortTagsAlphabetically() {
+   return openApi -> {
+       List<Tag> tags = openApi.getTags()
+         .stream()
+         .sorted(Comparator.comparing(tag -> StringUtils.stripAccents(tag.getName())))
+         .collect(Collectors.toList());
+            }
+}
+```
+- 위의 코드는 tag를 정렬하는 코드로 이름 순으로 정렬을 하기 위해서 사용
+  ![img_14.png](img_14.png) <br>
+- 위의 코드를 작성하고 Swagger UI 화면을 보면 정렬이 되어있는 것을 확인 할 수 있음
+
+```java
+Paths sortedPaths = new Paths();
+
+  Map<String, PathItem> paths = openApi.getPaths();
+  List<Map.Entry<String, PathItem>> entryList = new LinkedList<>(paths.entrySet());
+  List<Map.Entry<String, PathItem>> sortList = entryList
+          .stream()
+          .sorted(
+              Comparator.comparing(
+                map -> {
+                    PathItem pathItem = map.getValue();
+                    if (pathItem.getGet() != null) {
+                        if (pathItem.getGet().getSummary() == null) {
+                            return nullSortValue;
+                        }
+                        return StringUtils.stripAccents(pathItem.getGet().getSummary());
+                    } else if (pathItem.getPost() != null){
+        ...
+                    } else if (pathItem.getPut() != null){
+        ...
+                    } else if (pathItem.getDelete() != null){
+        ...
+                    } else {
+                        return nullSortValue;
+                    }
+                }
+```
+- 위의 코드는 Controller 메서드의 Operation 을 정렬하는 코드로 summary를 기준으로 정렬을 하기 위해서 사용<br>
+<br>![img_15.png](img_15.png) <br>
+- 위의 사진 처럼 정렬이 되어있는 것을 확인 할 수 있음
+
+
 > ### Restdocs - Restful API 문서화를 돕는 기술
 > ![img_4.png](img_4.png) <br>
 
