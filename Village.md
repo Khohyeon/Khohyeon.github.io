@@ -204,7 +204,10 @@ Paths sortedPaths = new Paths();
 <br>
 
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/ba097454-b688-4911-8c53-44241e31f4c6)
-
+### User 관련 테이블
+![img_18.png](img_18.png)!
+### Place 관련 테이블
+![img_17.png](img_17.png)
 <br>
 
 > ## 구현 화면
