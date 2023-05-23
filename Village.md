@@ -39,6 +39,15 @@
 
 ### 협업 툴<br>
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/70a49178-6bb3-4136-9241-feb5a0663f23)<br>
+![image](https://github.com/clean17/Village-Front-Project/assets/118657689/7fa02c32-4862-4391-97a9-b446b52f7150)
+![image](https://github.com/clean17/Village-Front-Project/assets/118657689/30dccaf8-feff-459c-bb32-c7e857141b6b)<br>
+![image](https://github.com/clean17/Village-Front-Project/assets/118657689/4da6dc79-8bda-4c09-af7d-ab38e7179191)
+
+### 기타 툴<br>
+![image](https://github.com/clean17/Village-Front-Project/assets/118657689/44f52fdb-b6db-45cc-a58d-4b35289db93c)
+
+### 협업 방식<br> 
+![image](https://github.com/clean17/Village-Front-Project/assets/118657689/70a49178-6bb3-4136-9241-feb5a0663f23)<br>
 ![img_8.png](img_8.png)
 ```
 figma : 디자인을 공유하고 피드백을 주고 받을 수 있습니다.
@@ -55,9 +64,6 @@ Git-hub : 이슈를 이용하여 협업을 하여 오류를 기록하여 지난 
 ```
 Notion : 프로젝트 일정 관리
 ```
-### 기타 툴<br>
-![image](https://github.com/clean17/Village-Front-Project/assets/118657689/44f52fdb-b6db-45cc-a58d-4b35289db93c)
-
 
 > ## 내가 한 기능
 
