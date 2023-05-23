@@ -385,7 +385,47 @@ Paths sortedPaths = new Paths();
 #### 로그인<br>
 ![Honeycam 2023-05-10 20-12-21](https://github.com/clean17/Village-Front-Project/assets/118657689/7e012423-8b12-4f9d-83c5-6c61feafda38)
 
+#### UserService
+```java
+@Transactional
+public ArrayList<String> 로그인(UserRequest.LoginDTO loginDTO) {
+    
+    ArrayList<String> loginViewList = new ArrayList<>();
 
+    Optional<User> userOP = userRepository.findByEmail(loginDTO.getEmail());
+    if (userOP.isPresent()) {
+        User userPS = userOP.get();
+
+        if (passwordEncoder.matches(loginDTO.getPassword(), userPS.getPassword())) {
+            String jwt = MyJwtProvider.create(userPS);
+            loginViewList.add(jwt);
+            loginViewList.add(String.valueOf(userPS.getId()));
+            loginViewList.add(userPS.getName());
+            loginViewList.add(userPS.getEmail());
+            loginViewList.add(userPS.getRole());
+
+            return loginViewList;
+    }
+```
+- 로그인을 할 때 ArrayList에 jwt, id, name, email, role을 담아서 반환
+
+#### UserController
+```java
+@PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody @Valid UserRequest.LoginDTO loginDTO, Errors Errors) {
+
+        ArrayList<String> loginViewList = userService.로그인(loginDTO);
+
+        String jwt = (String) loginViewList.get(0);
+        UserResponse.LoginDTO loginViewDTO = new UserResponse.LoginDTO(Long.parseLong(loginViewList.get(1)) ,
+                (String) loginViewList.get(2), (String) loginViewList.get(3), (String) loginViewList.get(4));
+
+        ...
+        
+        return ResponseEntity.ok().header(MyJwtProvider.HEADER, jwt).body(responseDTO);
+    }
+```
+- 로그인 시 Jwt 토큰 받아서 header에 넣어줌
 #### 공간 예약<br>
 ![Honeycam 2023-05-10 20-15-04](https://github.com/clean17/Village-Front-Project/assets/118657689/329ee29d-799f-4939-8f72-411b50263efc)
 ![Honeycam 2023-05-10 20-15-20](https://github.com/clean17/Village-Front-Project/assets/118657689/3f8833bf-61e2-4d2e-8031-06ef1ff71603)
@@ -455,8 +495,6 @@ firebaseCloudMessageService.sendMessageTo(
 #### 결제<br>
 ![Honeycam 2023-05-10 20-16-01](https://github.com/clean17/Village-Front-Project/assets/118657689/7a3cf849-09d2-4b24-a9b6-524139f01743)
 ![Honeycam 2023-05-10 20-16-16](https://github.com/clean17/Village-Front-Project/assets/118657689/2128be34-99b1-4b91-98b5-aba3520354b6)
-![Honeycam 2023-05-10 20-16-27](https://github.com/clean17/Village-Front-Project/assets/118657689/7efd754d-3723-427c-98ff-accf00c1b63e)
-
 #### 결제 검증
 ```java
     @PostMapping("/verification")
@@ -469,6 +507,9 @@ firebaseCloudMessageService.sendMessageTo(
 - PaymentDTO를 통해 결제 검증을 하고 결제 정보를 Payment에 담아서 반환
 - 결제 검증이 완료되면 결제 정보를 DB에 저장
 - 결제 검증이 완료되면 결제 정보를 Payment에 담아서 반환
+![Honeycam 2023-05-10 20-16-27](https://github.com/clean17/Village-Front-Project/assets/118657689/7efd754d-3723-427c-98ff-accf00c1b63e)
+
+
 
 #### 구매 요청
 ```java
@@ -572,17 +613,17 @@ public Host 호스트신청(HostSaveRequest hostSaveDto) {
 - 앱에서 Base64로 인코딩된 이미지 파일을 디코딩하여 이미지 파일을 불러옴
 
 ![Honeycam 2023-05-10 20-18-08](https://github.com/clean17/Village-Front-Project/assets/118657689/deb96fa9-7540-492e-acb9-5242ad903339)
-<br> 공간 등록시 해시태그 , 편의 시설 , 파일, 요일, 카테고리 , 공간 정보를 저장하기 위해 각각의 Repository를 생성하고 Service를 생성하여 저장하는 로직을 구현
-<br> 공간 정보를 저장하기 위해 placeJpaRepository를 생성하고 PlaceService를 생성하여 저장하는 로직을 구현
+- 공간 등록시 해시태그 , 편의 시설 , 파일, 요일, 카테고리 , 공간 정보를 저장하기 위해 각각의 Repository를 생성하고 Service를 생성하여 저장하는 로직을 구현
+- 공간 정보를 저장하기 위해 placeJpaRepository를 생성하고 PlaceService를 생성하여 저장하는 로직을 구현
 
- 공간 insert
+#### 공간 insert
 ```java
     placeRequest.setStatus(PlaceStatus.INACTIVE);
     placeRequest.setUser(user);
 
     Place savePlace = placeJpaRepository.save(placeRequest.toEntity());
 ```
- 해시태그 insert
+#### 해시태그 insert
 ```java
 
   List<Hashtag> hashtagList = new ArrayList<Hashtag>();
@@ -593,7 +634,7 @@ public Host 호스트신청(HostSaveRequest hostSaveDto) {
       hashtagList.add(saveHashtag);
   }
 ```
-편의 시설 insert
+#### 편의 시설 insert
 ```java
   List<FacilityInfo> facilityInfoList = new ArrayList<FacilityInfo>();
 
@@ -604,7 +645,7 @@ public Host 호스트신청(HostSaveRequest hostSaveDto) {
   }
 ```
 
-요일 날짜 insert
+#### 요일 날짜 insert
 ```java
 
     List<Dates> dateList = new ArrayList<Dates>();
@@ -616,7 +657,7 @@ public Host 호스트신청(HostSaveRequest hostSaveDto) {
     }
 ```
 
-카테고리 insert
+#### 카테고리 insert
 ```java
     Category category = new Category();
     category.setCategoryName(placeRequest.getCategoryName());
