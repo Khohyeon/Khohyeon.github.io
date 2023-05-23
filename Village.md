@@ -10,51 +10,6 @@
 
 <br>
 
-
-> ## 시연영상 ( Youtube )
-
-https://www.youtube.com/watch?v=X2QB7HTBATU&ab_channel=%EB%A9%94%ED%83%80%EC%BD%94%EB%94%A9
-
-<br>
-
-
-> ## 발표자료 ( PDF )
-
-![image](https://github.com/clean17/Village-Front-Project/assets/118657689/ac1cebd2-3086-429b-b48f-f2eaf2e5ad87)
-
-[4조 village.pdf](https://github.com/clean17/Village-Front-Project/files/11440847/4.village.pdf)
-
-
-<br>
-
-
-> ## 프로젝트 기간
-
-- 2023-04-10 ~ 2023.05.10
-
-<br>
-
-> ## 팀원 소개
-
-### Back-End
-
-|                                                 김호현                                                  |                                                 김정욱                                                  |
-| :-----------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: | 
-| <img src="https://avatars.githubusercontent.com/u/122351733?v=4" alt="profile" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/122331826?v=4" alt="profile" width="100" height="100"> | 
-|                                   [@Khohyeon](https://github.com/Khohyeon)                               |                                 [@juk5009](https://github.com/juk5009)                                 |
-
-<br>
-
-### Front-End
-|                                                 박인우(팀장)                                                  |                                                 이인화                                                  |
-| :-----------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: | 
-| <img src="https://github.com/clean17/Village-Front-Project/assets/118657689/c0efe9a4-72b3-4d2b-89b8-ff8a7d9b7598" alt="profile" width="100" height="100"> | [<img src="https://avatars.githubusercontent.com/u/122412968?v=4" alt="profile" width="100" height="100">](https://avatars.githubusercontent.com/u/122351923?v=4) | 
-|                                   [@clean17](https://github.com/clean17)                                   |                                 [@01LeeInhwa](https://github.com/01LeeInhwa)                                 |
-
-<br>
-
-
-
 > ## 기술 스택
 
 ### 개발 툴<br>
@@ -85,9 +40,11 @@ https://www.youtube.com/watch?v=X2QB7HTBATU&ab_channel=%EB%A9%94%ED%83%80%EC%BD%
 ### 협업 툴<br>
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/70a49178-6bb3-4136-9241-feb5a0663f23)
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/4da6dc79-8bda-4c09-af7d-ab38e7179191)
-![image](https://github.com/clean17/Village-Front-Project/assets/118657689/44f52fdb-b6db-45cc-a58d-4b35289db93c)
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/7fa02c32-4862-4391-97a9-b446b52f7150)
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/30dccaf8-feff-459c-bb32-c7e857141b6b)
+
+### 기타 툴<br>
+![image](https://github.com/clean17/Village-Front-Project/assets/118657689/44f52fdb-b6db-45cc-a58d-4b35289db93c)
 
 
 > ## 내가 한 기능
@@ -156,130 +113,282 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 <br>
 
 > ## 구현 화면
-
-![Honeycam 2023-05-10 20-10-03](https://github.com/clean17/Village-Front-Project/assets/118657689/06427e23-3639-49d5-bde3-1f258f608225)
+#### 메인화면 <br>
 ![Honeycam 2023-05-10 20-10-34](https://github.com/clean17/Village-Front-Project/assets/118657689/bb4efc0f-4f8f-4f29-a8cd-bfa5a434e82e)
+```java
+    @GetMapping("/places")
+    public ResponseEntity<Page<PlaceDTO>> getPage(Pageable pageable) {
+        Page<Place> page = placeService.getPage(pageable);
+        List<PlaceDTO> content = page.getContent().stream().map(Place::toDTO).toList();
+
+        return ResponseEntity.ok(new PageImpl<>(content, pageable, page.getTotalElements()));
+    }
+```
+#### Pageable 을 사용한 이유
+- 정렬된 데이터를 조회
+- DB에서 페이징 쿼리를 자동으로 생성하고 결과를 페이지 단위로 가져올 수 있음
+- 페이징을 따로 사용하지 않아도 페이지들의 정보를 받아 올 수 있기 때문에 사용
+#### 지도 <br>
 ![Honeycam 2023-05-10 20-11-08](https://github.com/clean17/Village-Front-Project/assets/118657689/76fa9d22-011e-46f9-93dd-5d1774780257)
+```java
+    @GetMapping("/imageUrl") //쿼리스트링으로 받기
+    public ResponseEntity<Map<String, String>> getMapImageUrl(
+            @RequestParam double lat, @RequestParam double lng, @RequestParam int zoom
+    ) {
+        try {
+            // Google Maps Static API endpoint
+            String url = "https://maps.googleapis.com/maps/api/staticmap";
+
+            // 요청 파라미터
+            String parameters = String.format(
+                    "center=%f,%f&zoom=%d&size=400x400&markers=color:red%%7Clabel:%%7C%f,%f&key=%s",
+                    lat, lng, zoom, lat, lng, "AIzaSyDmvb-5cgAOEvdoYoPt0jDUmxLpsW5aNvg" //api키
+            );
+            ...
+        }
+    }
+```
+- Google Maps Static API의 엔드포인트 URL을 이용하여 지도 이미지를 가져옴
+- 쿼리스트링으로 위도, 경도, 줌 값을 받아와서 지도 이미지를 가져옴
+- requestUrl 변수에는 완성된 요청 URL을 할당, 요청 URL은 url과 parameters를 결합하여 생성
+#### 검색 <br>
 ![Honeycam 2023-05-10 20-11-42](https://github.com/clean17/Village-Front-Project/assets/118657689/c4ea9913-a88e-4fb2-a846-1152d1eb5970)
+#### 회원 가입<br>
 ![Honeycam 2023-05-10 20-12-05](https://github.com/clean17/Village-Front-Project/assets/118657689/c2800454-1a99-43cd-8ad8-18320145039c)
+
+#### 비밀번호 암호화 시켜 회원가입
+```java
+    public UserResponse.JoinDTO 회원가입(UserRequest.JoinDTO joinDTO) {
+        try {
+            // select
+            String rawPassword = joinDTO.getPassword();
+            String encPassword = passwordEncoder.encode(rawPassword); // 60Byte
+            ...
+        }
+    }
+```
+
+#### 회원가입 시 Vaild Check
+- 회원가입 시 입력한 값이 유효한지 검사
+- 유효하지 않은 값이 들어오면 예외를 발생시킴
+- 예외가 발생하면 예외 처리를 해줌
+
+#### UserController
+```java
+    @PostMapping("/join")
+    public ResponseEntity<ResponseDTO<?>> join(@RequestBody @Valid UserRequest.JoinDTO joinDTO, Errors Errors) {
+       if (Errors.hasErrors()) {
+            throw new CustomException(Objects.requireNonNull(Errors.getFieldError()).getDefaultMessage());
+        }
+        ...
+    }
+```
+#### Vaild
+- @Valid 어노테이션을 사용하여 검사
+- Errors 객체를 사용하여 예외를 발생시킴
+- Errors 객체는 @Valid 어노테이션을 사용한 객체 바로 뒤에 위치해야 함
+#### JoinDTO
+```java
+    public static class JoinDTO {
+        @NotEmpty(message = "name을 입력해주세요.")
+        private String name;
+        @Email(message = "유효한 email 형식이 아닙니다.")
+        @NotEmpty(message = "email을 입력해주세요.")
+        private String email;
+        @NotEmpty(message = "password 입력해주세요.")
+        private String password;
+```
+#### Valid Check Annotation
+- @NotEmpty : null 과 "" 둘다 허용하지 않음
+- @NotBlank : null 과 "" 둘다 허용하지 않음, 공백도 허용하지 않음
+- @NotNull : null 만 허용하지 않음
+- @Email : 이메일 형식만 허용
+- @Size : 문자열의 길이를 제한
+
+#### 로그인<br>
 ![Honeycam 2023-05-10 20-12-21](https://github.com/clean17/Village-Front-Project/assets/118657689/7e012423-8b12-4f9d-83c5-6c61feafda38)
+
+#### 마이페이지<br>
 ![Honeycam 2023-05-10 20-12-46](https://github.com/clean17/Village-Front-Project/assets/118657689/336a5d8c-1a23-40f8-b19a-0c42d9b415ab)
-![Honeycam 2023-05-10 20-13-12](https://github.com/clean17/Village-Front-Project/assets/118657689/4550e600-2a70-41d3-ae4f-4e47db4671f3)
+#### Pageable을 사용하여 페이지네이션 구현
+```java
+    @GetMapping("/place")
+    public ResponseEntity<Page<PlaceDTO>> getPage(Pageable pageable) {
+        Page<Place> page = placeService.getPage(pageable);
+        List<PlaceDTO> content = page.getContent().stream().map(Place::toDTO).toList();
+
+        return ResponseEntity.ok(new PageImpl<>(content, pageable, page.getTotalElements()));
+    }
+```
+- Pageable : 페이지 정보를 담고있는 객체
+- Page : 페이지 정보를 담고있는 객체
+- PageImpl : 페이지 정보를 담고있는 객체
+
+#### 카테고리 검색<br>
 ![Honeycam 2023-05-10 20-13-30](https://github.com/clean17/Village-Front-Project/assets/118657689/ec19e4b0-f10d-43c3-acbf-a160a5366f78)
+#### 공간 전체<br>
 ![Honeycam 2023-05-10 20-13-43](https://github.com/clean17/Village-Front-Project/assets/118657689/8d137e7e-0e34-4334-b5ab-675faa5a36ba)
+#### 공간 상세<br>
 ![Honeycam 2023-05-10 20-13-59](https://github.com/clean17/Village-Front-Project/assets/118657689/da9c7ca8-d226-4bbe-bb34-bab3706fec95)
 ![Honeycam 2023-05-10 20-14-17](https://github.com/clean17/Village-Front-Project/assets/118657689/92554e61-b9a7-4772-8f80-7450b35b6746)
+#### 공간 예약<br>
 ![Honeycam 2023-05-10 20-15-04](https://github.com/clean17/Village-Front-Project/assets/118657689/329ee29d-799f-4939-8f72-411b50263efc)
 ![Honeycam 2023-05-10 20-15-20](https://github.com/clean17/Village-Front-Project/assets/118657689/3f8833bf-61e2-4d2e-8031-06ef1ff71603)
+#### FCM 알림<br>
 ![Honeycam 2023-05-10 20-15-37](https://github.com/clean17/Village-Front-Project/assets/118657689/5ebc8f0d-4b22-46bc-aea3-6604648b4811)
+<br> 
+
+#### 앱 화면으로 이동하는 코드
+```java
+ public void sendMessageTo(String targetToken, String title, String body) throws IOException {
+        String message = makeMessage(targetToken, title, body);
+
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .post(requestBody)
+                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+                .build();
+
+        Response response = client.newCall(request)
+                .execute();
+    }
+```
+
+#### 알림 이미지
+![img_3.png](img_3.png) <br>
+- targetToken : fCM 토큰 값 (앱을 설치한 사용자의 기기를 식별하는 토큰 값)
+- Title : 제목 (빨간 네모와 같이 제목을 알림창에 표시)
+- Body : 내용 (파란 네모와 같이 내용을 알림창에 표시)
+#### 예약 신청 시 RequestDTO를 통해 예약 정보를 전달
+
+```java
+RequestDTO requestDTO = new RequestDTO("Village",
+                "[예약알림]\n"+ user.getName()+ "님이 [" + place.getTitle() + "]에 예약 신청했습니다.\n"
+                        +"날짜: "+date+"\n"
+                        +"일시: "+DateUtils.parseLocalDateTime(reservationSaveRequest.getStartTime()).toLocalTime()+"~"
+                        +DateUtils.parseLocalDateTime(reservationSaveRequest.getEndTime()).toLocalTime()+"\n"
+                        +"인원: "+reservationSaveRequest.getPeopleNum()+"명\n",
+                fcm.getTargetToken());
+
+        firebaseCloudMessageService.sendMessageTo(
+                requestDTO.getTargetToken(),
+                requestDTO.getTitle(),
+                requestDTO.getBody());
+```
+
+#### 결제<br>
 ![Honeycam 2023-05-10 20-16-01](https://github.com/clean17/Village-Front-Project/assets/118657689/7a3cf849-09d2-4b24-a9b6-524139f01743)
 ![Honeycam 2023-05-10 20-16-16](https://github.com/clean17/Village-Front-Project/assets/118657689/2128be34-99b1-4b91-98b5-aba3520354b6)
 ![Honeycam 2023-05-10 20-16-27](https://github.com/clean17/Village-Front-Project/assets/118657689/7efd754d-3723-427c-98ff-accf00c1b63e)
+
+#### 결제 검증
+```java
+    @PostMapping("/verification")
+    public ResponseEntity<?> compare(@RequestBody PaymentDTO paymentDTO){
+        Payment payment = paymentService.결제검증(paymentDTO);
+        return new ResponseEntity<>(new ResponseDTO<>(1, 200, "결제 요청 전 DB 넣기 완료", payment), HttpStatus.OK);
+    }
+```
+- 앱에서 결제 요청을 보내면 결제 검증을 위해 결제 정보를 PaymentDTO에 담아서 전달
+- PaymentDTO를 통해 결제 검증을 하고 결제 정보를 Payment에 담아서 반환
+- 결제 검증이 완료되면 결제 정보를 DB에 저장
+- 결제 검증이 완료되면 결제 정보를 Payment에 담아서 반환
+
+#### 구매 요청
+```java
+
+    @PostMapping
+    public ResponseEntity<HashMap<Object,Object>> save(
+            @RequestBody ReceiptDTO receiptDTO
+            , @AuthenticationPrincipal MyUserDetails myUserDetails) throws IOException {
+
+        objectMapper.writeValueAsString(receiptDTO);
+
+        paymentService.구매요청(receiptDTO);
+
+        ...
+    }
+```
+
+#### 구매요청 Service
+```java
+    @Transactional
+    public Bootpay 구매요청(ReceiptDTO receiptDTO) {
+
+        Optional<Payment> paymentOptional = paymentRepository.findByOrderIdAndOrderNameAndTotalPrice(receiptDTO.getOrderId(), receiptDTO.getOrderName(), receiptDTO.getPrice());
+
+        if (paymentOptional.isEmpty()) {
+            throw new Exception400("payment","결제 정보가 올바르지 않습니다.");
+        }
+
+        Payment payment = paymentOptional.get();
+
+        payment.setStatus(PaymentStatus.COMPLETE);
+        paymentRepository.save(payment);
+
+        cardDataRepository.save(receiptDTO.getCard_data().toEntity());
+
+        metaRepository.save(receiptDTO.getMetadata().toEntity());
+
+        return bootPatRepository.save(receiptDTO.toEntity());
+    }
+```
+- findByOrderIdAndOrderNameAndTotalPrice() 메서드를 통해서 DB에 들어 있는 값이 다르면 결제 정보가 올바르지 않다는 예외를 발생시킴
+
+#### 결제 내역<br>
 ![Honeycam 2023-05-10 20-16-36](https://github.com/clean17/Village-Front-Project/assets/118657689/4ba5ef91-d9aa-464d-bef3-954ea4449d5f)
+#### HOST 신청<br>
 ![Honeycam 2023-05-10 20-17-07](https://github.com/clean17/Village-Front-Project/assets/118657689/111e4c46-6959-4a39-a244-601bcb7c230d)
 ![Honeycam 2023-05-10 20-17-16](https://github.com/clean17/Village-Front-Project/assets/118657689/b5167c25-8625-43dd-a763-a9cd60e1d93f)
+#### 공간 등록<br>
 ![Honeycam 2023-05-10 20-17-36](https://github.com/clean17/Village-Front-Project/assets/118657689/efd332c4-f67f-482e-9314-e53deb671752)
 ![Honeycam 2023-05-10 20-18-08](https://github.com/clean17/Village-Front-Project/assets/118657689/deb96fa9-7540-492e-acb9-5242ad903339)
 ![Honeycam 2023-05-10 20-18-23](https://github.com/clean17/Village-Front-Project/assets/118657689/25bcb04b-bd8d-4952-9722-c8249744d1cc)
+#### 이미지 AWS S3로 전송<br>
+
+```java
+// 해시태그 insert
+  List<Hashtag> hashtagList = new ArrayList<Hashtag>();
+
+  for (HashtagSaveDTO.HashtagSaveDto hash : placeRequest.getHashtag()) {
+      Hashtag save1 = hashtagRepository.save(hash.toEntity(hash.getHashtagName(), place));
+
+      hashtagList.add(save1);
+  }
+```
+```java
+// 편의 시설 insert
+  List<FacilityInfo> facilityInfoList = new ArrayList<FacilityInfo>();
+
+  for (FacilityInfoSaveDTO.FacilityInfoSaveDto facilityInfo : placeRequest.getFacilityInfo()) {
+      FacilityInfo savefacilityInfo = facilityInfoRepository.save(facilityInfo.toEntity(facilityInfo.getFacilityName(), place));
+
+      facilityInfoList.add(savefacilityInfo);
+  }
+```
+```java
+// file s3에 저장
+  List<File> fileList = new ArrayList<>();
+
+  for (FileSaveDTO.FileSaveDto files : placeRequest.getFile()) {
+      String imgPath = s3Service.upload(files.getFileName(), Base64Decoded.convertBase64ToMultipartFile(files.getFileUrl()));
+      files.setFileUrl(imgPath + ".jpg");
+
+      File save = fileRepository.save(files.toEntity(files.getFileName(), files.getFileUrl(), place));
+      fileList.add(save);
+
+      fileService.save(placeRequest.getFile().get(0));
+            }
+```
+- 공간 등록 시 AWS S3 API이용 하여 이미지 파일을 S3에 저장
+- S3에 저장된 이미지 파일의 URL을 DB에 저장
+- DB에 저장된 이미지 파일의 URL을 통해 이미지 파일을 불러옴
+- 불러온 이미지 파일을 Base64로 인코딩하여 앱에 전달
+- 앱에서 Base64로 인코딩된 이미지 파일을 디코딩하여 이미지 파일을 불러옴
+
+#### 관리자 페이지 <br>
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/c61aa2e9-5022-4433-ab8a-ae9087b1fc85)
-
-
-<br>
-
-> ## 기술 블로그
-
-김호현 <br>
-https://oil-hail-ded.notion.site/f503f6f26b7c4a589ee379b27444f078<br>
-
-김정욱 <br>
-https://snapdragon-maple-d1e.notion.site/34fc09fac7684501a4a29bd6da6bb8b5<br>
-
-박인우 <br>
-https://velog.io/@merci/series/Flutter<br>
-
-이인화 <br>
-https://geode-krill-9ab.notion.site/Sliver-0fb83d2a0b7c4a069c73b3a2724a199a<br>
-
-<br>
-
-> ## 담당 기능
-
-김호현(백)
-- 호스트 신청
-- 공간 등록, 조회, 수정
-- 예약 신청
-- 알림 (FCM)
-- 결제 (BootPay)
-- 이미지 저장 (S3)
-- 관리자 페이지
-- RestDoc
-
-김정욱(백)
-- 로그인, 회원가입
-- 시큐리티, JWT 토큰
-- 메인 공간 조회
-- 공간 검색(키워드, 카테고리)
-- 공간 필터링(정렬)
-
-<br>
-
-박인우(프론트)
-
-- Riverpod 상태 관리
-- 스크립트 EC2, RDS 배포
-- 지도, 주소 API 로 지도 보기 및 주소 검색
-- Sentry로 에러 관리
-- Bootpay로 결제 데이터 관리 및 적용
-- 내주변 지도 페이지
-- 카테고리, 검색페이지
-- 상세 페이지
-- 공간 등록 페이지
-- 결제 페이지
-
-이인화(프론트)
-- Riverpod 상태 관리
-- 스플래쉬 페이지
-- 메인 페이지
-- 로그인, 회원가입 페이지
-- 마이페이지
-- 호스트 신청 페이지
-- 예약내역 페이지
-- 공지사항
-
-
-
-
-
-> ## 보완점
-
-- 리뷰나 스크랩기능은 어렵지 않은데 시간이 부족해 끝내지 못한 점이 아쉽다.<br>
-- 비밀번호 찾기 기능을 하고 싶었지만 못해서 아쉽다.<br>
-- rebase 머지를 처음 하면서 여러 어려움을 겪었지만 다음에는 경험을 바탕으로 잘 처리할 것이다.<br>
-
-<br>
-
-> ## 후기
-
-김호현
-- 프론트 와 백엔드로 나누어 프로젝트를 처음 해봤기에 소통을 하는 부분이 부족하다는 것을 느꼈습니다.
-- JPA 를 처음 사용하면서 처음에는 복잡하고 힘들다고 생각을 했지만 잘 이해를 하면 오히려 편하게 사용 할 수 있다고 생각이 들었고 무엇보다도 Restdocs 를 사용 하기 위해 Test 코드를 작성을 하며 좋은 결과를 이루었다.
-- FCM , AWS S3, BootPay, Restdocs 와 같은 여러 API 문서를 보면서 많이 공부를 하는 시간을 가진 것 같고 한편으로 많이 성장 하는 시간이었다고 생각합니다. 
-
-박인우
-- 프로젝트를 진행하면서 초기 계획과 많이 달라져 힘든 부분도 있었지만 조금 더 개발이라는 업무와 가까워진것 같다.
-- 팀원들을 이끌면서 팀장이라는 역할에 대해 다시 한번 생각하는 계기가 되었다.
-
-
-이인화
-- 파이널 프로젝트를 하며 다양한 기능을 구현해 볼 수 있어서 재밌었습니다
-- 리버팟에 익숙하지 않아 데이터를 바인딩하는데 어려움을 겪어 아쉬웠지만 팀원들과 함께 프로젝트를 만들어 좋은 경험이었습니다.
-
-
-
-김정욱
-- 배려심과 책임감이 강한 팀원들과 작업해서 저는 너무 행복하게 작업했습니다.
-- 6개월동안 저도 그렇고 모두들 쉴틈없이 작업했는데 다들 원하는 곳에 취업하고 좋은 결과 얻었으면 좋겠습니다
-
-
-
 
