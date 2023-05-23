@@ -226,6 +226,24 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 #### 공간 예약<br>
 ![Honeycam 2023-05-10 20-15-04](https://github.com/clean17/Village-Front-Project/assets/118657689/329ee29d-799f-4939-8f72-411b50263efc)
 ![Honeycam 2023-05-10 20-15-20](https://github.com/clean17/Village-Front-Project/assets/118657689/3f8833bf-61e2-4d2e-8031-06ef1ff71603)
+
+```java
+@PostMapping("/user/reservation")
+    public ResponseEntity<ResponseDTO<ReservationSaveResponse>> save(
+            @Valid @RequestBody ReservationSaveRequest reservationSaveRequest,
+            @AuthenticationPrincipal MyUserDetails myUserDetails
+            ) throws IOException {
+            
+        ...
+        
+        var saveReservation = reservationService.예약신청(reservationSaveRequest, myUserDetails.getUser(), place);
+
+        LocalDate date = DateUtils.fromLocalDateTime(DateUtils.parseLocalDateTime(reservationSaveRequest.getDate()));
+
+       ...
+    }
+``` 
+LocalDateTime 으로 들어오는 요청 데이터를 LocalDate 타입으로 파싱하여 받아 예약 신청
 #### FCM 알림<br>
 ![Honeycam 2023-05-10 20-15-37](https://github.com/clean17/Village-Front-Project/assets/118657689/5ebc8f0d-4b22-46bc-aea3-6604648b4811)
 <br> 
