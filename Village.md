@@ -38,11 +38,23 @@
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/e33f02cb-6fae-4c53-901a-89d386693ac4)<br>
 
 ### 협업 툴<br>
-![image](https://github.com/clean17/Village-Front-Project/assets/118657689/70a49178-6bb3-4136-9241-feb5a0663f23)
-![image](https://github.com/clean17/Village-Front-Project/assets/118657689/4da6dc79-8bda-4c09-af7d-ab38e7179191)
+![image](https://github.com/clean17/Village-Front-Project/assets/118657689/70a49178-6bb3-4136-9241-feb5a0663f23)<br>
+![img_8.png](img_8.png)
+```
+figma : 디자인을 공유하고 피드백을 주고 받을 수 있습니다.
+```
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/7fa02c32-4862-4391-97a9-b446b52f7150)
-![image](https://github.com/clean17/Village-Front-Project/assets/118657689/30dccaf8-feff-459c-bb32-c7e857141b6b)
+![image](https://github.com/clean17/Village-Front-Project/assets/118657689/30dccaf8-feff-459c-bb32-c7e857141b6b)<br>
+![img_6.png](img_6.png)<br>
+```
+Git-hub : 이슈를 이용하여 협업을 하여 오류를 기록하여 지난 오류 로그를 한눈에 볼 수 있고, 팀원들의 이슈를 확인하여 협업을 할 수 있습니다.
+```
 
+![image](https://github.com/clean17/Village-Front-Project/assets/118657689/4da6dc79-8bda-4c09-af7d-ab38e7179191)
+![img_5.png](img_5.png) <br>
+```
+Notion : 프로젝트 일정 관리
+```
 ### 기타 툴<br>
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/44f52fdb-b6db-45cc-a58d-4b35289db93c)
 
@@ -50,7 +62,8 @@
 > ## 내가 한 기능
 
 > ### FCM : Firebase Cloud Messaging - 구글제공 클라우드 메시징 서비스
-![img_2.png](img_2.png) <br>
+> ![img_2.png](img_2.png) <br>
+ 
   Firebase의 FCM을 이용하여 예약 및 결제시 HOST의 앱으로 알림기능을 구현 <br>
 - FCM을 사용한 이유는 실시간으로 메시지 전송을 지원을 하여 사용자에게 빠르게 알림을 전송할 수 있고 예약과 결제 같이 예민할 수 있는 부분이 있는 기능에는 이런 
 실시간 알림이 필요한 어플리케이션에 적합 하다고 생각을 함<br>
@@ -60,7 +73,9 @@
 - 그 토큰을 firebase의 플랫폼으로 메시지를 전송을 한 후 전송 받은 데이터를 앱에 전달 하고 앱으로 알림을 띄움 <br>
 - 예약신청 및 결제신청 할 때 위의 과정을 이용해서 HOST에게 알림을 보내는 기능 구현 <br>
  
-> ### AWS S3 - 아마존 웹 서비스의 클라우드 스토리지 서비스 
+> ### AWS S3 - 아마존 웹 서비스의 클라우드 스토리지 서비스
+> ![img_9.png](img_9.png) <br>
+
 S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)에 저장을 하여 파일을 url로 받아 앱으로 전송 <br>
 - 파일은 그냥 그대로 DB에 넣어 사용을 할 수 있는데 S3를 사용하는 이유는 ?? <br>
 -> DB에 파일을 저장하면 파일 크기나 수에 제한이 있기에 파일 저장 용량과 DB성능에 영향을 줄 수 있기에 많은 양의 파일이나 대용량 파일을 효율적으로 저장하고 관리 할 수 있음
@@ -77,6 +92,8 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 - 만약 결제 시도 후 발생하는 오류 정보를 서버에 전송하여 관리하면 문제가 발생했을 때 신속하게 대응할 수 있도록 사용
 
 > ### Restdocs - Restful API 문서화를 돕는 기술
+> ![img_4.png](img_4.png) <br>
+
 통합 테스트를 작성하여 Restdocs 를 이용하여 API 문서화를 시켜 봄 <br>
 - swagger 와 restdocs 는 똑같이 API 문서화를 시키지만 Restdocs 를 사용한
 가장 큰 이유라고 하면 통합테스트를 이용하여 Controller 의 에러를 잡을 수 있고 효율적으로 문서화를 할 수 있었기에 사용  <br>
@@ -353,6 +370,8 @@ firebaseCloudMessageService.sendMessageTo(
 #### HOST 신청<br>
 ![Honeycam 2023-05-10 20-17-07](https://github.com/clean17/Village-Front-Project/assets/118657689/111e4c46-6959-4a39-a244-601bcb7c230d)
 ![Honeycam 2023-05-10 20-17-16](https://github.com/clean17/Village-Front-Project/assets/118657689/b5167c25-8625-43dd-a763-a9cd60e1d93f)
+
+
 #### 공간 등록<br>
 ![Honeycam 2023-05-10 20-17-36](https://github.com/clean17/Village-Front-Project/assets/118657689/efd332c4-f67f-482e-9314-e53deb671752)
 #### 이미지 AWS S3로 전송
@@ -371,6 +390,7 @@ firebaseCloudMessageService.sendMessageTo(
       fileService.save(placeRequest.getFile().get(0));
             }
 ```
+
 - 공간 등록 시 AWS S3 API이용 하여 이미지 파일을 S3에 저장
 - S3에 저장된 이미지 파일의 URL을 DB에 저장
 - DB에 저장된 이미지 파일의 URL을 통해 이미지 파일을 불러옴
