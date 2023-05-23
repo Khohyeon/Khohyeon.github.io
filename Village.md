@@ -48,19 +48,19 @@
 
 ### 협업 방식<br> 
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/70a49178-6bb3-4136-9241-feb5a0663f23)<br>
-![img_8.png](img_8.png)
+![img_8.png](image/img_8.png)
 ```
 figma : 디자인을 공유하고 피드백을 주고 받을 수 있습니다.
 ```
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/7fa02c32-4862-4391-97a9-b446b52f7150)
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/30dccaf8-feff-459c-bb32-c7e857141b6b)<br>
-![img_6.png](img_6.png)<br>
+![img_6.png](image/img_6.png)<br>
 ```
 Git-hub : 이슈를 이용하여 협업을 하여 오류를 기록하여 지난 오류 로그를 한눈에 볼 수 있고, 팀원들의 이슈를 확인하여 협업을 할 수 있습니다.
 ```
 
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/4da6dc79-8bda-4c09-af7d-ab38e7179191)
-![img_5.png](img_5.png) <br>
+![img_5.png](image/img_5.png) <br>
 ```
 Notion : 프로젝트 일정 관리
 ```
@@ -68,7 +68,7 @@ Notion : 프로젝트 일정 관리
 > ## 내가 한 기능
 
 > ### FCM : Firebase Cloud Messaging - 구글제공 클라우드 메시징 서비스
-> ![img_2.png](img_2.png) <br>
+> ![img_2.png](image/img_2.png) <br>
  
   Firebase의 FCM을 이용하여 예약 및 결제시 HOST의 앱으로 알림기능을 구현 <br>
 - FCM을 사용한 이유는 실시간으로 메시지 전송을 지원을 하여 사용자에게 빠르게 알림을 전송할 수 있고 예약과 결제 같이 예민할 수 있는 부분이 있는 기능에는 이런 
@@ -80,7 +80,7 @@ Notion : 프로젝트 일정 관리
 - 예약신청 및 결제신청 할 때 위의 과정을 이용해서 HOST에게 알림을 보내는 기능 구현 <br>
  
 > ### AWS S3 - 아마존 웹 서비스의 클라우드 스토리지 서비스
-> ![img_9.png](img_9.png) <br>
+> ![img_9.png](image/img_9.png) <br>
 
 S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)에 저장을 하여 파일을 url로 받아 앱으로 전송 <br>
 - 파일은 그냥 그대로 DB에 넣어 사용을 할 수 있는데 S3를 사용하는 이유는 ?? <br>
@@ -98,7 +98,7 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 - 만약 결제 시도 후 발생하는 오류 정보를 서버에 전송하여 관리하면 문제가 발생했을 때 신속하게 대응할 수 있도록 사용
 
 > ### Swagger - API 문서화를 위한 오픈소스 프레임워크
-> ![img_10.png](img_10.png) <br>
+> ![img_10.png](image/img_10.png) <br>
 
 1. Spring에 Swagger 적용
 
@@ -110,14 +110,14 @@ implementation 'org.springdoc:springdoc-openapi-ui:1.6.7'
    http://localhost:8080/swagger-ui/index.html#/ <br>
     위의 주소로 접속을 하면 Swagger UI 화면이 나옴 <br>
 3. Swagger 어노테이션 종류 및 사용법
-![img_11.png](img_11.png) <br>
+![img_11.png](image/img_11.png) <br>
 - @Tag : Controller 클래스에 적용하며, Swagger 리소스에 대한 정보를 표현
 - @Operation : Controller 메소드에 적용하며, 개별 API에 대한 정보를 표현
-  ![img_12.png](img_12.png) <br>
+  ![img_12.png](image/img_12.png) <br>
 - Tag는 위 사진의 빨간 박스에 있는 명칭을 지정을 할 수 있는 것으로 name과 description으로 정리
 - Operation 은 파란 박스로 summary와 description으로 정리 가능
 4. Swagger UI 화면 정렬<br>
-![img_13.png](img_13.png) <br>
+![img_13.png](image/img_13.png) <br>
 - 정렬이 되어있지 않은 화면을 정렬을 하기 위해서 Customizing 을 해야함
 - 시나리오를 작성하고 정렬을 하기 위해서는 SwaggerConfig 파일을 생성을 해야함
 ```java
@@ -132,7 +132,7 @@ public OpenApiCustomiser sortTagsAlphabetically() {
 }
 ```
 - 위의 코드는 tag를 정렬하는 코드로 이름 순으로 정렬을 하기 위해서 사용
-  ![img_14.png](img_14.png) <br>
+  ![img_14.png](image/img_14.png) <br>
 - 위의 코드를 작성하고 Swagger UI 화면을 보면 정렬이 되어있는 것을 확인 할 수 있음
 
 ```java
@@ -165,12 +165,12 @@ Paths sortedPaths = new Paths();
 - 위의 코드는 Controller 메서드의 Operation 을 정렬하는 코드로 summary를 기준으로 정렬을 하기 위해서 사용<br>
 - 이 상황에서 GET, POST, PUT, DELETE 메서드를 사용하고 있기 때문에 각각의 메서드를 정렬을 해야함
 - @ApiOperation(value = "GET 메서드", method = "GET") 이 어노테이션을 메서드에 적용을 하면 정렬이 됨
-<br>![img_15.png](img_15.png) <br>
+<br>![img_15.png](image/img_15.png) <br>
 - 위의 사진 처럼 정렬이 되어있는 것을 확인 할 수 있음
 
 
 > ### Restdocs - Restful API 문서화를 돕는 기술
-> ![img_4.png](img_4.png) <br>
+> ![img_4.png](image/img_4.png) <br>
 
 통합 테스트를 작성하여 Restdocs 를 이용하여 API 문서화를 시켜 봄 <br>
 - swagger 와 restdocs 는 똑같이 API 문서화를 시키지만 Restdocs 를 사용한
@@ -205,9 +205,9 @@ Paths sortedPaths = new Paths();
 
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/ba097454-b688-4911-8c53-44241e31f4c6)
 ### User 관련 테이블
-![img_18.png](img_18.png)!
+![img_18.png](image/img_18.png)!
 ### Place 관련 테이블
-![img_17.png](img_17.png)
+![img_17.png](image/img_17.png)
 <br>
 
 > ## 구현 화면
@@ -366,7 +366,7 @@ LocalDateTime 으로 들어오는 요청 데이터를 LocalDate 타입으로 파
 ```
 
 #### 알림 이미지
-![img_3.png](img_3.png) <br>
+![img_3.png](image/img_3.png) <br>
 - targetToken : fCM 토큰 값 (앱을 설치한 사용자의 기기를 식별하는 토큰 값)
 - Title : 제목 (빨간 네모와 같이 제목을 알림창에 표시)
 - Body : 내용 (파란 네모와 같이 내용을 알림창에 표시)
@@ -463,7 +463,7 @@ firebaseCloudMessageService.sendMessageTo(
 
   for (FileSaveDTO.FileSaveDto files : placeRequest.getFile()) {
       String imgPath = s3Service.upload(files.getFileName(), Base64Decoded.convertBase64ToMultipartFile(files.getFileUrl()));
-      files.setFileUrl(imgPath + ".jpg");
+      files.setFileUrl(image/imgPath + ".jpg");
 
       File save = fileRepository.save(files.toEntity(files.getFileName(), files.getFileUrl(), place));
       fileList.add(save);
