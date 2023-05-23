@@ -124,10 +124,7 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
         return ResponseEntity.ok(new PageImpl<>(content, pageable, page.getTotalElements()));
     }
 ```
-#### Pageable 을 사용한 이유
-- 정렬된 데이터를 조회
-- DB에서 페이징 쿼리를 자동으로 생성하고 결과를 페이지 단위로 가져올 수 있음
-- 페이징을 따로 사용하지 않아도 페이지들의 정보를 받아 올 수 있기 때문에 사용
+
 #### 지도 <br>
 ![Honeycam 2023-05-10 20-11-08](https://github.com/clean17/Village-Front-Project/assets/118657689/76fa9d22-011e-46f9-93dd-5d1774780257)
 ```java
@@ -151,8 +148,6 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 - Google Maps Static API의 엔드포인트 URL을 이용하여 지도 이미지를 가져옴
 - 쿼리스트링으로 위도, 경도, 줌 값을 받아와서 지도 이미지를 가져옴
 - requestUrl 변수에는 완성된 요청 URL을 할당, 요청 URL은 url과 parameters를 결합하여 생성
-#### 검색 <br>
-![Honeycam 2023-05-10 20-11-42](https://github.com/clean17/Village-Front-Project/assets/118657689/c4ea9913-a88e-4fb2-a846-1152d1eb5970)
 #### 회원 가입<br>
 ![Honeycam 2023-05-10 20-12-05](https://github.com/clean17/Village-Front-Project/assets/118657689/c2800454-1a99-43cd-8ad8-18320145039c)
 
@@ -203,7 +198,6 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 - @NotBlank : null 과 "" 둘다 허용하지 않음, 공백도 허용하지 않음
 - @NotNull : null 만 허용하지 않음
 - @Email : 이메일 형식만 허용
-- @Size : 문자열의 길이를 제한
 
 #### 로그인<br>
 ![Honeycam 2023-05-10 20-12-21](https://github.com/clean17/Village-Front-Project/assets/118657689/7e012423-8b12-4f9d-83c5-6c61feafda38)
@@ -211,26 +205,24 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 #### 마이페이지<br>
 ![Honeycam 2023-05-10 20-12-46](https://github.com/clean17/Village-Front-Project/assets/118657689/336a5d8c-1a23-40f8-b19a-0c42d9b415ab)
 #### Pageable을 사용하여 페이지네이션 구현
-```java
-    @GetMapping("/place")
-    public ResponseEntity<Page<PlaceDTO>> getPage(Pageable pageable) {
-        Page<Place> page = placeService.getPage(pageable);
-        List<PlaceDTO> content = page.getContent().stream().map(Place::toDTO).toList();
 
-        return ResponseEntity.ok(new PageImpl<>(content, pageable, page.getTotalElements()));
-    }
+```java
+  @GetMapping("/place")
+  public ResponseEntity<Page<PlaceDTO>> getPage(Pageable pageable) {
+      Page<Place> page = placeService.getPage(pageable);
+      List<PlaceDTO> content = page.getContent().stream().map(Place::toDTO).toList();
+  
+      return ResponseEntity.ok(new PageImpl<>(content, pageable, page.getTotalElements()));
+  }
 ```
+#### Pageable 을 사용한 이유
+- 정렬된 데이터를 조회
+- DB에서 페이징 쿼리를 자동으로 생성하고 결과를 페이지 단위로 가져올 수 있음
+- 페이징을 따로 사용하지 않아도 페이지들의 정보를 받아 올 수 있기 때문에 사용
+#### Pageable 의 종류
 - Pageable : 페이지 정보를 담고있는 객체
 - Page : 페이지 정보를 담고있는 객체
 - PageImpl : 페이지 정보를 담고있는 객체
-
-#### 카테고리 검색<br>
-![Honeycam 2023-05-10 20-13-30](https://github.com/clean17/Village-Front-Project/assets/118657689/ec19e4b0-f10d-43c3-acbf-a160a5366f78)
-#### 공간 전체<br>
-![Honeycam 2023-05-10 20-13-43](https://github.com/clean17/Village-Front-Project/assets/118657689/8d137e7e-0e34-4334-b5ab-675faa5a36ba)
-#### 공간 상세<br>
-![Honeycam 2023-05-10 20-13-59](https://github.com/clean17/Village-Front-Project/assets/118657689/da9c7ca8-d226-4bbe-bb34-bab3706fec95)
-![Honeycam 2023-05-10 20-14-17](https://github.com/clean17/Village-Front-Project/assets/118657689/92554e61-b9a7-4772-8f80-7450b35b6746)
 #### 공간 예약<br>
 ![Honeycam 2023-05-10 20-15-04](https://github.com/clean17/Village-Front-Project/assets/118657689/329ee29d-799f-4939-8f72-411b50263efc)
 ![Honeycam 2023-05-10 20-15-20](https://github.com/clean17/Village-Front-Project/assets/118657689/3f8833bf-61e2-4d2e-8031-06ef1ff71603)
@@ -241,20 +233,20 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 #### 앱 화면으로 이동하는 코드
 ```java
  public void sendMessageTo(String targetToken, String title, String body) throws IOException {
-        String message = makeMessage(targetToken, title, body);
+    String message = makeMessage(targetToken, title, body);
 
-        OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
-        Request request = new Request.Builder()
-                .url(API_URL)
-                .post(requestBody)
-                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
-                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
-                .build();
+    OkHttpClient client = new OkHttpClient();
+    RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
+    Request request = new Request.Builder()
+            .url(API_URL)
+            .post(requestBody)
+            .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+            .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+            .build();
 
-        Response response = client.newCall(request)
-                .execute();
-    }
+    Response response = client.newCall(request)
+            .execute();
+}
 ```
 
 #### 알림 이미지
@@ -266,17 +258,17 @@ S3를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)
 
 ```java
 RequestDTO requestDTO = new RequestDTO("Village",
-                "[예약알림]\n"+ user.getName()+ "님이 [" + place.getTitle() + "]에 예약 신청했습니다.\n"
-                        +"날짜: "+date+"\n"
-                        +"일시: "+DateUtils.parseLocalDateTime(reservationSaveRequest.getStartTime()).toLocalTime()+"~"
-                        +DateUtils.parseLocalDateTime(reservationSaveRequest.getEndTime()).toLocalTime()+"\n"
-                        +"인원: "+reservationSaveRequest.getPeopleNum()+"명\n",
-                fcm.getTargetToken());
+        "[예약알림]\n"+ user.getName()+ "님이 [" + place.getTitle() + "]에 예약 신청했습니다.\n"
+                +"날짜: "+date+"\n"
+                +"일시: "+DateUtils.parseLocalDateTime(reservationSaveRequest.getStartTime()).toLocalTime()+"~"
+                +DateUtils.parseLocalDateTime(reservationSaveRequest.getEndTime()).toLocalTime()+"\n"
+                +"인원: "+reservationSaveRequest.getPeopleNum()+"명\n",
+        fcm.getTargetToken());
 
-        firebaseCloudMessageService.sendMessageTo(
-                requestDTO.getTargetToken(),
-                requestDTO.getTitle(),
-                requestDTO.getBody());
+firebaseCloudMessageService.sendMessageTo(
+        requestDTO.getTargetToken(),
+        requestDTO.getTitle(),
+        requestDTO.getBody());
 ```
 
 #### 결제<br>
@@ -345,30 +337,8 @@ RequestDTO requestDTO = new RequestDTO("Village",
 ![Honeycam 2023-05-10 20-17-16](https://github.com/clean17/Village-Front-Project/assets/118657689/b5167c25-8625-43dd-a763-a9cd60e1d93f)
 #### 공간 등록<br>
 ![Honeycam 2023-05-10 20-17-36](https://github.com/clean17/Village-Front-Project/assets/118657689/efd332c4-f67f-482e-9314-e53deb671752)
-![Honeycam 2023-05-10 20-18-08](https://github.com/clean17/Village-Front-Project/assets/118657689/deb96fa9-7540-492e-acb9-5242ad903339)
-![Honeycam 2023-05-10 20-18-23](https://github.com/clean17/Village-Front-Project/assets/118657689/25bcb04b-bd8d-4952-9722-c8249744d1cc)
-#### 이미지 AWS S3로 전송<br>
+#### 이미지 AWS S3로 전송
 
-```java
-// 해시태그 insert
-  List<Hashtag> hashtagList = new ArrayList<Hashtag>();
-
-  for (HashtagSaveDTO.HashtagSaveDto hash : placeRequest.getHashtag()) {
-      Hashtag save1 = hashtagRepository.save(hash.toEntity(hash.getHashtagName(), place));
-
-      hashtagList.add(save1);
-  }
-```
-```java
-// 편의 시설 insert
-  List<FacilityInfo> facilityInfoList = new ArrayList<FacilityInfo>();
-
-  for (FacilityInfoSaveDTO.FacilityInfoSaveDto facilityInfo : placeRequest.getFacilityInfo()) {
-      FacilityInfo savefacilityInfo = facilityInfoRepository.save(facilityInfo.toEntity(facilityInfo.getFacilityName(), place));
-
-      facilityInfoList.add(savefacilityInfo);
-  }
-```
 ```java
 // file s3에 저장
   List<File> fileList = new ArrayList<>();
@@ -388,6 +358,34 @@ RequestDTO requestDTO = new RequestDTO("Village",
 - DB에 저장된 이미지 파일의 URL을 통해 이미지 파일을 불러옴
 - 불러온 이미지 파일을 Base64로 인코딩하여 앱에 전달
 - 앱에서 Base64로 인코딩된 이미지 파일을 디코딩하여 이미지 파일을 불러옴
+
+![Honeycam 2023-05-10 20-18-08](https://github.com/clean17/Village-Front-Project/assets/118657689/deb96fa9-7540-492e-acb9-5242ad903339)
+<br> 공간 등록시 해시태그 , 편의 시설 , 파일 , 공간 정보를 저장하기 위해 각각의 Repository를 생성하고 Service를 생성하여 저장하는 로직을 구현
+<br> 공간 정보를 저장하기 위해 PlaceRepository를 생성하고 PlaceService를 생성하여 저장하는 로직을 구현
+
+```java
+// 해시태그 insert
+  List<Hashtag> hashtagList = new ArrayList<Hashtag>();
+
+  for (HashtagSaveDTO.HashtagSaveDto hash : placeRequest.getHashtag()) {
+      Hashtag saveHashtag = hashtagRepository.save(hash.toEntity(hash.getHashtagName(), place));
+
+      hashtagList.add(saveHashtag);
+  }
+```
+```java
+// 편의 시설 insert
+  List<FacilityInfo> facilityInfoList = new ArrayList<FacilityInfo>();
+
+  for (FacilityInfoSaveDTO.FacilityInfoSaveDto facilityInfo : placeRequest.getFacilityInfo()) {
+      FacilityInfo savefacilityInfo = facilityInfoRepository.save(facilityInfo.toEntity(facilityInfo.getFacilityName(), place));
+
+      facilityInfoList.add(savefacilityInfo);
+  }
+```
+![Honeycam 2023-05-10 20-18-23](https://github.com/clean17/Village-Front-Project/assets/118657689/25bcb04b-bd8d-4952-9722-c8249744d1cc)
+
+
 
 #### 관리자 페이지 <br>
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/c61aa2e9-5022-4433-ab8a-ae9087b1fc85)
