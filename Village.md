@@ -116,7 +116,7 @@ implementation 'org.springdoc:springdoc-openapi-ui:1.6.7'
   ![img_12.png](img_12.png) <br>
 - Tag는 위 사진의 빨간 박스에 있는 명칭을 지정을 할 수 있는 것으로 name과 description으로 정리
 - Operation 은 파란 박스로 summary와 description으로 정리 가능
-4. Swagger UI 화면 정렬
+4. Swagger UI 화면 정렬<br>
 ![img_13.png](img_13.png) <br>
 - 정렬이 되어있지 않은 화면을 정렬을 하기 위해서 Customizing 을 해야함
 - 시나리오를 작성하고 정렬을 하기 위해서는 SwaggerConfig 파일을 생성을 해야함
@@ -163,6 +163,8 @@ Paths sortedPaths = new Paths();
                 }
 ```
 - 위의 코드는 Controller 메서드의 Operation 을 정렬하는 코드로 summary를 기준으로 정렬을 하기 위해서 사용<br>
+- 이 상황에서 GET, POST, PUT, DELETE 메서드를 사용하고 있기 때문에 각각의 메서드를 정렬을 해야함
+- @ApiOperation(value = "GET 메서드", method = "GET") 이 어노테이션을 메서드에 적용을 하면 정렬이 됨
 <br>![img_15.png](img_15.png) <br>
 - 위의 사진 처럼 정렬이 되어있는 것을 확인 할 수 있음
 
