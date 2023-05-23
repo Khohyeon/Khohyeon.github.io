@@ -203,7 +203,7 @@ Paths sortedPaths = new Paths();
 
 <br>
 
-![img.png](img.png)
+![table.png](image/tableimg.png)
 
 ### User 관련 테이블
 ![img_18.png](image/img_18.png)!
