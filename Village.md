@@ -489,7 +489,9 @@ public Map<String,Object> 로그인(UserRequest.LoginDTO loginDTO) {
 }
 ```
 - String jwt = MyJwtProvider.create(userPS); <br>
--> jwt 토큰을 생성하는 메서드를 호출하여 jwt 토큰을 생성 
+-> jwt 토큰을 생성하는 메서드를 호출하여 jwt 토큰을 생성 <br>
+- spring security에서 제공하는 passwordEncoder를 사용하여 암호화 시킨 비밀번호를 비교하여 로그인
+- 로그인을 할 때 ArrayMap에 jwt, id, name, email, role을 담아서 반환
 
 #### JWT 토큰 생성
 ```java
@@ -505,8 +507,35 @@ public static String create(User user) {
 ```
 - JWT withClaim : 토큰에 담을 User의 정보(id, role)를 설정
 
-- spring security에서 제공하는 passwordEncoder를 사용하여 암호화 시킨 비밀번호를 비교하여 로그인
-- 로그인을 할 때 ArrayMap에 jwt, id, name, email, role을 담아서 반환
+#### SecurityConfig 에서 Jwt 커스텀 필터
+```java
+ @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        
+         ...
+        
+        http.apply(new CustomSecurityFilterManager());
+        
+         ...
+
+}
+```
+- JWT 토큰을 검사하는 필터를 적용하기 위해 CustomSecurityFilterManager를 적용
+
+#### CustomSecurityFilterManager
+```java
+public class CustomSecurityFilterManager extends AbstractHttpConfigurer<CustomSecurityFilterManager, HttpSecurity> {
+    @Override
+    public void configure(HttpSecurity builder) throws Exception {
+        AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
+        builder.addFilter(new JwtAuthorizationFilter(authenticationManager));
+        super.configure(builder);
+    }
+}
+```
+- JwtAuthorizationFilter : Jwt 토큰을 검사하는 필터
+- JwtAuthorizationFilter는 AuthenticationManager를 사용하여 인증을 진행
+
 
 
 #### UserController
@@ -526,7 +555,6 @@ public static String create(User user) {
     }
 ```
 - 로그인 시 Jwt 토큰 받아서 header에 넣어줌
-
 
 #### 공간 예약<br>
 ![Honeycam 2023-05-10 20-15-04](https://github.com/clean17/Village-Front-Project/assets/118657689/329ee29d-799f-4939-8f72-411b50263efc)
@@ -550,8 +578,11 @@ public ResponseEntity<ResponseDTO<ReservationSaveResponse>> save(
 ``` 
 - LocalDateTime 으로 들어오는 요청 데이터를 LocalDate 타입으로 파싱하여 받아 예약 신청 <br>
 -> 날짜는 따로 받아서 예약 신청을 하기 때문에 시간과 분만 필요함 
-- @AuthenticationPrincipal 사용이유 : 로그인을 한 사용자만 예약 신청을 할 수 있도록 하기 위해 사용
-- @AuthenticationPrincipal : spring security에 제공하는 어노테이션으로 로그인한 사용자의 정보를 가져옴
+#### @AuthenticationPrincipal 사용 이유
+- 토큰의 정보를 Authentication에 넣어서 Session 처럼 사용 하는데 로그인 정보를 가져오기 위해
+principal 객체를 사용하여 사용자의 정보를 가져오기 위해 사용
+- 이때 같이 사용 되는 것이 UserDetail 객체인데 이 객체는 사용자의 정보를 담고 있음
+- 따로 User의 권한 까지 관리하기 위해 커스텀하여 myUserDetails 객체를 만들어서 사용자의 정보와 권한을 담아서 사용
 #### FCM 알림<br>
 ![Honeycam 2023-05-10 20-15-37](https://github.com/clean17/Village-Front-Project/assets/118657689/5ebc8f0d-4b22-46bc-aea3-6604648b4811)
 <br> 
@@ -660,8 +691,7 @@ firebaseCloudMessageService.sendMessageTo(
         ...
     }
 ```
-- findByOrderIdAndOrderNameAndTotalPrice() 메서드를 통해서 DB에 들어 있는 값을 조회 하고 
-조회한 값과 웹훅으로 전달 된 데이터가 다르면 결제 정보가 올바르지 않다는 예외를 발생시킴
+- DB에 들어 있는 값을 조회 하고 조회한 값과 웹훅으로 전달 된 데이터가 다르면 결제 정보가 올바르지 않다는 예외를 발생시킴
 - 결제 정보가 올바르면 결제 상태를 COMPLETE로 변경
 #### HOST 신청<br>
 ![Honeycam 2023-05-10 20-17-07](https://github.com/clean17/Village-Front-Project/assets/118657689/111e4c46-6959-4a39-a244-601bcb7c230d)
@@ -750,7 +780,7 @@ public Host 호스트신청(HostSaveRequest hostSaveDto) {
     category.setPlace(place);
     categoryRepository.save(category);
 ```
-#### 공간 등록 관련 테이블
+#### 공간 등록 관련 테이블 참조
 ![img_1.png](img_1.png)
 
 
