@@ -515,26 +515,28 @@ public Map<String,Object> 로그인(UserRequest.LoginDTO loginDTO) {
 
 ```java
 @PostMapping("/user/reservation")
-    public ResponseEntity<ResponseDTO<ReservationSaveResponse>> save(
-            @Valid @RequestBody ReservationSaveRequest reservationSaveRequest,
-            @AuthenticationPrincipal MyUserDetails myUserDetails
-            ) throws IOException {
-            
-        ...
+public ResponseEntity<ResponseDTO<ReservationSaveResponse>> save(
+        @Valid @RequestBody ReservationSaveRequest reservationSaveRequest,
+        @AuthenticationPrincipal MyUserDetails myUserDetails
+        ) throws IOException {
         
-        var saveReservation = reservationService.예약신청(reservationSaveRequest, myUserDetails.getUser(), place);
+    ...
+    
+    var saveReservation = reservationService.예약신청(reservationSaveRequest, myUserDetails.getUser(), place);
 
-        LocalDate date = DateUtils.fromLocalDateTime(DateUtils.parseLocalDateTime(reservationSaveRequest.getDate()));
+    LocalDate date = DateUtils.fromLocalDateTime(DateUtils.parseLocalDateTime(reservationSaveRequest.getDate()));
 
-       ...
-    }
+   ...
+}
 ``` 
-LocalDateTime 으로 들어오는 요청 데이터를 LocalDate 타입으로 파싱하여 받아 예약 신청
+- LocalDateTime 으로 들어오는 요청 데이터를 LocalDate 타입으로 파싱하여 받아 예약 신청 <br>
+-> 날짜는 따로 받아서 예약 신청을 하기 때문에 시간과 분만 필요함 
+- @AuthenticationPrincipal 사용이유 : 로그인을 한 사용자만 예약 신청을 할 수 있도록 하기 위해 사용
 #### FCM 알림<br>
 ![Honeycam 2023-05-10 20-15-37](https://github.com/clean17/Village-Front-Project/assets/118657689/5ebc8f0d-4b22-46bc-aea3-6604648b4811)
 <br> 
 
-#### 앱 화면으로 이동하는 코드
+#### firebase로 메시지를 전송하는 코드
 ```java
  public void sendMessageTo(String targetToken, String title, String body) throws IOException {
     String message = makeMessage(targetToken, title, body);
@@ -578,11 +580,13 @@ firebaseCloudMessageService.sendMessageTo(
 #### 결제<br>
 ![Honeycam 2023-05-10 20-16-01](https://github.com/clean17/Village-Front-Project/assets/118657689/7a3cf849-09d2-4b24-a9b6-524139f01743)
 ![Honeycam 2023-05-10 20-16-16](https://github.com/clean17/Village-Front-Project/assets/118657689/2128be34-99b1-4b91-98b5-aba3520354b6)
-#### 결제 검증
+
+#### 결제 요청시 DB에 검증 할 데이터 넣기
+
 ```java
     @PostMapping("/verification")
     public ResponseEntity<?> compare(@RequestBody PaymentDTO paymentDTO){
-        Payment payment = paymentService.결제검증(paymentDTO);
+        Payment payment = paymentService.결제요청(paymentDTO);
         return new ResponseEntity<>(new ResponseDTO<>(1, 200, "결제 요청 전 DB 넣기 완료", payment), HttpStatus.OK);
     }
 ```
@@ -592,9 +596,7 @@ firebaseCloudMessageService.sendMessageTo(
 - 결제 검증이 완료되면 결제 정보를 Payment에 담아서 반환<br>
 ![Honeycam 2023-05-10 20-16-27](https://github.com/clean17/Village-Front-Project/assets/118657689/7efd754d-3723-427c-98ff-accf00c1b63e)
 
-
-
-#### 구매 요청
+#### 결제 검증 (웹훅)
 ```java
 
     @PostMapping
@@ -604,16 +606,16 @@ firebaseCloudMessageService.sendMessageTo(
 
         objectMapper.writeValueAsString(receiptDTO);
 
-        paymentService.구매요청(receiptDTO);
+        paymentService.결제검증(receiptDTO);
 
         ...
     }
 ```
 
-#### 구매요청 Service
+#### 결제검증 Service
 ```java
     @Transactional
-    public Bootpay 구매요청(ReceiptDTO receiptDTO) {
+    public Bootpay 결제검증(ReceiptDTO receiptDTO) {
 
         Optional<Payment> paymentOptional = paymentRepository.findByOrderIdAndOrderNameAndTotalPrice(receiptDTO.getOrderId(), receiptDTO.getOrderName(), receiptDTO.getPrice());
 
