@@ -58,11 +58,14 @@ figma : 디자인을 공유하고 피드백을 주고 받을 수 있습니다.
 ```
 Git-hub : 이슈를 이용하여 협업을 하여 오류를 기록하여 지난 오류 로그를 한눈에 볼 수 있고, 팀원들의 이슈를 확인하여 협업을 할 수 있습니다.
 ```
-
+![img.png](img.png)<br>
+```
+pull-request를 이용하여 협업을 하여 코드를 리뷰하고, 코드를 수정할 수 있습니다.
+```
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/4da6dc79-8bda-4c09-af7d-ab38e7179191)
 ![img_5.png](image/img_5.png) <br>
 ```
-Notion : 프로젝트 일정 관리
+Notion : 프로젝트 일정 관리 및 회의록을 작성할 수 있습니다.
 ```
 
 > ## 내가 한 기능
