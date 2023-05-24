@@ -109,17 +109,33 @@ public static class LoginDTO {
         ...
     }
 ```
+- 앱 실행시 전달 되는 토큰을 받아와서 DB에 저장<br>
 
-- 요청시 받은 targetToken을 이용하여 DB에 저장된 토큰과 같은지 확인
- ```java
-// User가 로그인 시 FcmToken 같이 넣기
-    Optional<Fcm> fcmTokenOptional = fcmRepository.findByTargetToken(loginDTO.getTargetToken());
-    if (fcmTokenOptional.isEmpty()){
+#### 로그인 시 FCM 테이블에 User 업데이트 시키기
+
+```java
+        ...
+        // User가 로그인 시 FcmToken 같이 넣기
+        Optional<Fcm> fcmTokenOptional = fcmRepository.findByTargetToken(loginDTO.getTargetToken());
+        if (fcmTokenOptional.isEmpty()){
         throw new CustomException("해당 토큰이 존재하지 않습니다");
-    }
+        }
+
+        Fcm fcmToken = fcmTokenOptional.get();
+
+        Optional<User> userOptional = userRepository.findById(loginViewDTO.getId());
+        if (userOptional.isEmpty()){
+        throw new CustomException("유저를 조회할 수 없습니다.");
+        }
+
+        User user = userOptional.get();
+
+        fcmRepository.save(fcmToken.toEntity(fcmToken.getId(), user, loginDTO.getTargetToken()));
+                ...
+        }
 ```
-- 토큰이 값이 없을 때 예외처리를 함 <br>
-- 토큰이 값이 있을 때는 해당 토큰을 DB에 저장된 토큰과 비교하여 같으면 로그인 성공, 다르면 로그인 실패<br>
+- Fcm 테이블에서 사용자의 토큰 값을 조회를 해서 토큰 값이 없으면 예외처리를 함<br>
+- 토큰이 값이 있을 때는 해당 토큰을 DB에 저장된 토큰과 비교하여 같으면 User의 데이터를 업데이트 시킴<br>
 
 #### 토큰을 활용하여 해당 사용자에게 알림 보내는 방법
 - 사용자 앱 실행 시 푸시 알림을 받을 수 있는 토큰을 생성 
