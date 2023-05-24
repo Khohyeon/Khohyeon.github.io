@@ -488,6 +488,23 @@ public Map<String,Object> 로그인(UserRequest.LoginDTO loginDTO) {
 
 }
 ```
+- String jwt = MyJwtProvider.create(userPS); <br>
+-> jwt 토큰을 생성하는 메서드를 호출하여 jwt 토큰을 생성 
+
+#### JWT 토큰 생성
+```java
+public static String create(User user) {
+    String jwt = JWT.create()
+            .withSubject(SUBJECT)
+            .withExpiresAt(new Date(System.currentTimeMillis() + EXP))
+            .withClaim("id", user.getId())
+            .withClaim("role", user.getRole())
+            .sign(Algorithm.HMAC512(SECRET));
+    return TOKEN_PREFIX + jwt;
+    }
+```
+- JWT withClaim : 토큰에 담을 User의 정보(id, role)를 설정
+
 - spring security에서 제공하는 passwordEncoder를 사용하여 암호화 시킨 비밀번호를 비교하여 로그인
 - 로그인을 할 때 ArrayMap에 jwt, id, name, email, role을 담아서 반환
 
@@ -509,6 +526,8 @@ public Map<String,Object> 로그인(UserRequest.LoginDTO loginDTO) {
     }
 ```
 - 로그인 시 Jwt 토큰 받아서 header에 넣어줌
+
+
 #### 공간 예약<br>
 ![Honeycam 2023-05-10 20-15-04](https://github.com/clean17/Village-Front-Project/assets/118657689/329ee29d-799f-4939-8f72-411b50263efc)
 ![Honeycam 2023-05-10 20-15-20](https://github.com/clean17/Village-Front-Project/assets/118657689/3f8833bf-61e2-4d2e-8031-06ef1ff71603)
@@ -532,6 +551,7 @@ public ResponseEntity<ResponseDTO<ReservationSaveResponse>> save(
 - LocalDateTime 으로 들어오는 요청 데이터를 LocalDate 타입으로 파싱하여 받아 예약 신청 <br>
 -> 날짜는 따로 받아서 예약 신청을 하기 때문에 시간과 분만 필요함 
 - @AuthenticationPrincipal 사용이유 : 로그인을 한 사용자만 예약 신청을 할 수 있도록 하기 위해 사용
+- @AuthenticationPrincipal : spring security에 제공하는 어노테이션으로 로그인한 사용자의 정보를 가져옴
 #### FCM 알림<br>
 ![Honeycam 2023-05-10 20-15-37](https://github.com/clean17/Village-Front-Project/assets/118657689/5ebc8f0d-4b22-46bc-aea3-6604648b4811)
 <br> 
@@ -590,10 +610,7 @@ firebaseCloudMessageService.sendMessageTo(
         return new ResponseEntity<>(new ResponseDTO<>(1, 200, "결제 요청 전 DB 넣기 완료", payment), HttpStatus.OK);
     }
 ```
-- 앱에서 결제 요청을 보내면 결제 검증을 위해 결제 정보를 PaymentDTO에 담아서 전달
-- PaymentDTO를 통해 결제 검증을 하고 결제 정보를 Payment에 담아서 반환
-- 결제 검증이 완료되면 결제 정보를 DB에 저장
-- 결제 검증이 완료되면 결제 정보를 Payment에 담아서 반환<br>
+- 앱에서 결제 요청을 보내면 결제 정보 중 검증할 데이터(OrderId, OrderName, Price)를 저장
 ![Honeycam 2023-05-10 20-16-27](https://github.com/clean17/Village-Front-Project/assets/118657689/7efd754d-3723-427c-98ff-accf00c1b63e)
 
 #### 결제 검증 (웹훅)
@@ -611,8 +628,10 @@ firebaseCloudMessageService.sendMessageTo(
         ...
     }
 ```
+- 결제 검증을 위해 Bootpay에서 웹훅을 통해 결제 정보를 전달
 
 #### 결제검증 Service
+
 ```java
     @Transactional
     public Bootpay 결제검증(ReceiptDTO receiptDTO) {
@@ -628,10 +647,21 @@ firebaseCloudMessageService.sendMessageTo(
         payment.setStatus(PaymentStatus.COMPLETE);
         paymentRepository.save(payment);
 
+        if (payment.getOrderId().equals(receiptDTO.getOrderId())) {
+        throw new Exception400("payment", "주문번호가 일치하지 않습니다.");
+        }
+        if (payment.getOrderName().equals(receiptDTO.getOrderName())) {
+        throw new Exception400("payment", "주문명이 일치하지 않습니다.");
+        }
+        if (payment.getTotalPrice().intValue() != receiptDTO.getPrice()) {
+        throw new Exception400("payment", "결제 금액이 일치하지 않습니다.");
+        }
+
         ...
     }
 ```
-- findByOrderIdAndOrderNameAndTotalPrice() 메서드를 통해서 DB에 들어 있는 값이 다르면 결제 정보가 올바르지 않다는 예외를 발생시킴
+- findByOrderIdAndOrderNameAndTotalPrice() 메서드를 통해서 DB에 들어 있는 값을 조회 하고 
+조회한 값과 웹훅으로 전달 된 데이터가 다르면 결제 정보가 올바르지 않다는 예외를 발생시킴
 - 결제 정보가 올바르면 결제 상태를 COMPLETE로 변경
 #### HOST 신청<br>
 ![Honeycam 2023-05-10 20-17-07](https://github.com/clean17/Village-Front-Project/assets/118657689/111e4c46-6959-4a39-a244-601bcb7c230d)
@@ -641,25 +671,18 @@ firebaseCloudMessageService.sendMessageTo(
 ```java
 public class HostSaveRequest {
 
-    @NotBlank(message = "호스트의 이름을 다시 확인해주세요.")
-    private String hostName;
-
-    private String nickname;
-
-    @NotBlank(message = "호스트의 주소를 다시 확인해주세요.")
-    private PlaceAddress address;
-
-    @NotBlank(message = "호스트의 사업자 번호를 다시 확인해주세요.")
+    ...
+    
     @Size(min = 10, max = 10, message = "사업자 번호는 10자리여야 합니다.")
     private String businessNum;
 
-    private HostStatus status;
+    ...
 }
 ```
+- Vaild Check를 통해 유효성 검사
 - @Size를 사용하여 사업자 번호의 길이를 10자리로 제한
-- @NotBlank를 사용하여 빈 값이 들어오면 예외를 발생시킴
 
-HOST 신청을 하면 status를 Wait로 변경
+#### HOST 신청을 하면 status를 Wait로 변경
 ```java
 public Host 호스트신청(HostSaveRequest hostSaveDto) {
 
@@ -674,28 +697,7 @@ public Host 호스트신청(HostSaveRequest hostSaveDto) {
 
 #### 공간 등록<br>
 ![Honeycam 2023-05-10 20-17-36](https://github.com/clean17/Village-Front-Project/assets/118657689/efd332c4-f67f-482e-9314-e53deb671752)
-#### 이미지 AWS S3로 전송
-
-```java
-// file s3에 저장
-  List<File> fileList = new ArrayList<>();
-
-  for (FileSaveDTO.FileSaveDto files : placeRequest.getFile()) {
-      String imgPath = s3Service.upload(files.getFileName(), Base64Decoded.convertBase64ToMultipartFile(files.getFileUrl()));
-      files.setFileUrl(image/imgPath + ".jpg");
-
-      File save = fileRepository.save(files.toEntity(files.getFileName(), files.getFileUrl(), place));
-      fileList.add(save);
-
-      fileService.save(placeRequest.getFile().get(0));
-            }
-```
-
-- 공간 등록 시 AWS SDK 를 이용하여 s3(AWS) 에 업로드 한 후 결과를 url로 받음 <br>
-- S3에 저장된 이미지 파일의 URL을 DB에 저장
-- DB에 저장된 이미지 파일의 URL을 앱으로 전달하고 앱에서 URL을 통해 파일을 불러옴
-- 이때 URL은 Base64로 인코딩하여 앱에 전달됨
-- 앱에서 Base64로 인코딩된 이미지 파일을 디코딩하여 이미지 파일을 불러옴
+- 공간 이미지 AWS S3로 전송
 
 ![Honeycam 2023-05-10 20-18-08](https://github.com/clean17/Village-Front-Project/assets/118657689/deb96fa9-7540-492e-acb9-5242ad903339)
 - 공간 등록시 해시태그 , 편의 시설 , 파일, 요일, 카테고리 , 공간 정보를 저장하기 위해 각각의 Entity에 save 하는 로직을 구현
@@ -748,10 +750,13 @@ public Host 호스트신청(HostSaveRequest hostSaveDto) {
     category.setPlace(place);
     categoryRepository.save(category);
 ```
-![Honeycam 2023-05-10 20-18-23](https://github.com/clean17/Village-Front-Project/assets/118657689/25bcb04b-bd8d-4952-9722-c8249744d1cc)
-
+#### 공간 등록 관련 테이블
+![img_1.png](img_1.png)
 
 
 #### 관리자 페이지 <br>
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/c61aa2e9-5022-4433-ab8a-ae9087b1fc85)
 
+- 관리자 페이지에서는 공간 신청을 한 HOST의 신청을 승인 또는 거절 할 수 있음
+- 승인을 하면 HOST의 status가 ACTIVE로 변경
+- 예약 내역 및 결제 내역 관리
