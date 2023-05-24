@@ -69,12 +69,13 @@ Notion : 프로젝트 일정 관리
 
 > ## FCM : Firebase Cloud Messaging - 구글제공 클라우드 메시징 서비스
 > ![img_2.png](image/img_2.png) <br>
- 
-  Firebase의 FCM을 이용하여 예약 및 결제시 HOST의 앱으로 알림기능을 구현 <br>
-- FCM을 사용한 이유는 실시간으로 데이터 전송을 지원을 하여 사용자에게 빠르게 알림을 전송할 수 있기에 사용<br>
-- 앱을 처음 킬 때 firebase에 요청을 하여 토큰을 받고 firebase에서 서버로 토큰을 보내면 DB에 저장을 시켜 토큰 값을 보관<br>
-  그 이유는 각 사용자에게 고유한 FCM 토큰을 부여 하고 이 토큰을 DB에 저장하면 개별 사용자를 식별하고 관리 가능 <br> 
-- 토큰의 유효성 검사를 하기위해 로그인 시 토큰이 맞는지 확인을 함 <br>
+
+예약 및 결제시 Firebase의 FCM을 이용하여 앱으로 알림기능을 구현 <br>
+- FCM을 사용한 이유는 실시간으로 데이터 전송을 지원을 하여 사용자(Host)에게 빠르게 알림을 전송할 수 있기에 사용<br>
+- 앱을 처음 킬 때 firebase에 요청을 하여 토큰을 받고 앱에서 서버로 토큰을 보내면 서버에서 firebase로 토큰을 검증하고
+검증이 됐다면 DB에 저장을 시켜 토큰 값을 보관<br>
+- 로그인 시 토큰을 받아와서 FCM 테이블에 사용자의 id로 저장을 시킴 
+- 각 사용자의 FCM 토큰을 부여 하고 사용자의 토큰을 DB에 저장하면 개별 사용자를 식별하고 관리 가능 
 
 요청을 할 때의 loginDTO
 ```java
@@ -85,9 +86,8 @@ public static class LoginDTO {
     private String targetToken;
     }
 ```
-- 요청을 받을 때 targetToken을 같이 받아서 DB에 저장된 토큰과 같은지 확인을 함 <br>
 
-요청시 받은 targetToken을 이용하여 DB에 저장된 토큰과 같은지 확인
+- 요청시 받은 targetToken을 이용하여 DB에 저장된 토큰과 같은지 확인
  ```java
 // User가 로그인 시 FcmToken 같이 넣기
     Optional<Fcm> fcmTokenOptional = fcmRepository.findByTargetToken(loginDTO.getTargetToken());
@@ -95,8 +95,15 @@ public static class LoginDTO {
         throw new CustomException("해당 토큰이 존재하지 않습니다");
     }
 ```
-- 토큰이 값이 다르거나 없을 때 예외처리를 함 <br>
-- 그 토큰을 firebase로 데이터를 전송을 한 후 전송 받은 데이터를 sendMessageTo() 메서드를 통해서 앱에 전달 한다. <br>
+- 토큰이 값이 없을 때 예외처리를 함 <br>
+- 토큰이 값이 있을 때는 해당 토큰을 DB에 저장된 토큰과 비교하여 같으면 로그인 성공, 다르면 로그인 실패<br>
+
+#### 토큰을 활용하여 해당 사용자에게 알림 보내는 방법
+- 사용자 앱 실행 시 푸시 알림을 받을 수 있는 토큰을 생성 
+- 토큰을 생성하고 DB에 저장
+- 알림을 보낼 때 title과 content 데이터를 준비하고 토큰을 가지고 푸시 알림 플랫폼에 전송
+- 푸시 알림 플랫폼에서는 토큰을 확인하고 해당 토큰을 가진 사용자에게 알림을 전송
+
 ```java
 public void sendMessageTo(String targetToken, String title, String body) throws IOException {
         String message = makeMessage(targetToken, title, body);
@@ -134,23 +141,20 @@ public void sendMessageTo(String targetToken, String title, String body) throws 
             }
 ```
 #### 파일을 AWS S3 버킷에 저장하는 과정
+
+- S3 SDK 를 이용하여 파일을 aws sdk 를 이용하여 s3(AWS) 에 업로드 하여 파일을 url로 받아 앱으로 전송 <br>
 - S3에 저장된 이미지 파일의 URL을 DB에 저장
 - DB에 저장된 이미지 파일의 URL을 통해 이미지 파일을 불러옴
 - 불러온 이미지 파일을 Base64로 인코딩하여 앱에 전달
 - 앱에서 Base64로 인코딩된 이미지 파일을 디코딩하여 이미지 파일을 불러옴
-
-S3 SDK 를 이용하여 파일을 AWS 버킷(데이터를 저장하는 기본 단위)에 저장을 하여 파일을 url로 받아 앱으로 전송 <br>
 - 파일은 그냥 그대로 DB에 넣어 사용을 할 수 있는데 S3를 사용하는 이유는 ?? <br>
--> DB에 파일을 저장하면 파일 크기나 수에 제한이 있기에 파일 저장 용량과 DB성능에 영향을 줄 수 있기에 많은 양의 파일이나 대용량 파일을 효율적으로 저장하고 관리 할 수 있음
-- S3를 사용한 이유는 안정적이고 신뢰할 수 있는 서비스로 인정받고 있다고 하여 사용을 해봤고 사용량에 따라 자동으로 확장되어
-데이터의 증가나 변화에 따라 유연하게 대응할 수 있다는 점에서 사용 <br>
-- 공간등록, 유저프로필 수정과 같은 이미지 나 파일을 등록 할 때 S3의 버킷에 저장하여 사용
+-> DB에 파일을 저장하면 파일 크기에 제한이 있기에 DB성능에 영향을 줄 수 있다. 
+-> 안정적이고 신뢰할 수 있는 서비스로 인정받고 있어 사용을 했고 용량이 가득차면 자동으로 확장되어 유연하게 대응할 수 있다는 점에서 사용 <br>
 
 > ## BootPay - 한국의 온라인 결제 서비스 플랫폼
 결제 모듈을 간편한 결제 플로우를 지닌 부트페이를 사용했고 결제 검증을 하여 부적절한 요청이 왔을 때 해결 <br>
-- 다른 결제 모듈 API 가 존재하지만 BootPay 를 사용한 이유는 다양한 결제 수단으로 사용자들이 편리하게 원하는 결제 수단을 선택하여 결제할 수 있고
-개발자 친화적 API 를 제공 및 사용자 인터페이스와 결제 플로우를 쉽게 구현 가능 하여 선택 <br>
 - 앱에서 결제를 시도 할 때 받아오는 request 데이터를 1차적으로 DB에 주문 아이디, 주문 이름, 가격 저장
+
 ```java
 public Payment 결제검증(PaymentDTO paymentDTO) {
         paymentDTO.setStatus(PaymentStatus.WAIT);
@@ -158,7 +162,7 @@ public Payment 결제검증(PaymentDTO paymentDTO) {
     }
 ```
 
-- 결제 서버 승인 시, 부트페이 웹훅으로 결제 정보를 받아와서 DB에 저장된 데이터와 비교를 하여 결제가 성공적으로 이루어 졌는지 여부를 알 수 있음
+- 결제 서버 승인 시, 부트페이 웹훅으로 결제 정보를 받아와서 DB에 저장된 데이터와 비교를 하여 결제할 수량과 가격 검증을 한후 정상 이면 결제 진행 아니면 결제 취소를 진행
 ```java
 public Bootpay 구매요청(ReceiptDTO receiptDTO) {
 
@@ -171,7 +175,6 @@ public Bootpay 구매요청(ReceiptDTO receiptDTO) {
         ...
 }
 ```
-- 결제가 성공적으로 이루어 졌을 때 DB에 저장된 데이터와 비교를 하여 값이 맞다면 결제를 할 수 있게 사용 <br>
 
 
 > ## Swagger - API 문서화를 위한 오픈소스 프레임워크
@@ -255,11 +258,37 @@ Paths sortedPaths = new Paths();
 - Swagger UI를 통해 상호작용 가능한 API 문서를 제공하며, 클라이언트가 API 요청을 테스트하고 통신할 수 있도록 지원
 - restdocs 는 테스트 기반으로 API 를 테스트하면 API 코드와 문서가 함께 유지되므로, API 의 동작과 관련된 정보를 쉽게 확인 할 수 있고 백엔드 에서 작업을 할 때 API 코드를 작성하면서
   동시에 문서도 작성 할 수 있음 <br>
-- 반면에 REST Docs는 테스트 코드와 함께 사용되므로, API 요청과 응답을 테스트하고 테스트 결과를 기반으로 문서를 생성
-  -> swagger 의 장점을 restdocs 를 사용하면서 극복한 점 : 테스트 케이스를 실행하여 실제 동작하는 API 와 일치하는 정확한 문서를 생성
-- Rest API 를 사용하여 통신을 하기 때문에 문서화를 위해 통합 테스트를 구현 <br>
-- 테스트 코드에서 사용한 요청과 응답에 대한 문서 템플릿 작성 Asciidoctor 문법을 사용하여 문서를 스타일링 하고 필요한 형식을 출력 <br>
-- Rest Docs 사용함으로써 테스트 코드를 실행하여 실제 요청과 응답 결과를 문서에 포함시키기 때문에 이를 통해 정확하고 실제적인 예시를 문서로 제공을 함 <br>
+- swagger 의 단점을 restdocs 를 사용하면서 극복한 점 : 테스트 케이스를 실행하여 실제 동작하는 API 와 일치하는 정확한 문서를 생성
+- 테스트 코드에서 사용한 요청과 응답에 대한 문서 템플릿 작성 Asciidoctor 문법을 사용하여 문서를 스타일링 하고 필요한 형식을 출력 (markdown 도 사용가능) <br>
+
+```java
+@SpringBootTest
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class AbstractIntegrated {
+
+    protected MockMvc mockMvc;
+    protected final ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeEach
+    void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                .apply(documentationConfiguration(restDocumentation))
+                .apply(SecurityMockMvcConfigurers.springSecurity())
+                .build();
+    }
+```
+
+- 테스트 코드를 작성할 때 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class}) 를 사용하여 Restdocs 를 사용하겠다고 선언
+- @BeforeEach 를 사용하여 테스트 코드를 실행하기 전에 setUp 실행
+- setUp 메서드에서 MockMvc 를 사용하여 mockMvc 를 생성
+- mockMvc 를 생성할 때 RestDocumentationContextProvider 를 사용하여 문서화를 하겠다고 선언<br>
+-> 테스트 코드에서 생성된 문서의 저장 위치, 문서에 대한 메타데이터, 문서의 형식 등을 정의하고 사용 가능 
+- mockMvc 를 생성할 때 documentationConfiguration(restDocumentation) 를 사용하여 문서화를 하겠다고 선언<br>
+-> MockMvc를 구성할 때 REST Docs의 구성을 적용하여 테스트를 실행하고, 테스트 결과를 문서화하는 데 필요한 동작을 수행 
+- mockMvc 를 생성할 때 SecurityMockMvcConfigurers.springSecurity() 를 사용하여 Spring Security 를 사용하겠다고 선언
+
 
 > ## 기능정리
 - 등록된 공간 목록 조회
@@ -506,7 +535,7 @@ firebaseCloudMessageService.sendMessageTo(
 - 앱에서 결제 요청을 보내면 결제 검증을 위해 결제 정보를 PaymentDTO에 담아서 전달
 - PaymentDTO를 통해 결제 검증을 하고 결제 정보를 Payment에 담아서 반환
 - 결제 검증이 완료되면 결제 정보를 DB에 저장
-- 결제 검증이 완료되면 결제 정보를 Payment에 담아서 반환
+- 결제 검증이 완료되면 결제 정보를 Payment에 담아서 반환<br>
 ![Honeycam 2023-05-10 20-16-27](https://github.com/clean17/Village-Front-Project/assets/118657689/7efd754d-3723-427c-98ff-accf00c1b63e)
 
 
