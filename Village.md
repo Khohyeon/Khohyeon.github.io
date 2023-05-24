@@ -754,9 +754,22 @@ public Host 호스트신청(HostSaveRequest hostSaveDto) {
 ![img_1.png](img_1.png)
 
 
-#### 관리자 페이지 <br>
+### 관리자 페이지 <br>
 ![image](https://github.com/clean17/Village-Front-Project/assets/118657689/c61aa2e9-5022-4433-ab8a-ae9087b1fc85)
 
+##### Host 신청 관리
 - 관리자 페이지에서는 공간 신청을 한 HOST의 신청을 승인 또는 거절 할 수 있음
-- 승인을 하면 HOST의 status가 ACTIVE로 변경
-- 예약 내역 및 결제 내역 관리
+- 승인을 하면 HOST의 status가 ACTIVE로 변경 
+- 신청을 한 User의 role이 HOST로 변경
+
+##### 공간 관리
+- 공간 관리를 통해서 공간의 정보를 확인 하고 활성화 상태를 관리 할 수 있음
+- 비활성화를 하면 Place의 status가 INACTIVE로 변경
+##### 유저 관리
+- 유저 관리를 통해서 유저의 정보를 확인 할 수 있음
+- 비활성화를 하면 User의 status가 INACTIVE로 변경
+##### 예약 관리
+- 예약 내역 관리를 통해서 예약 내역을 확인 할 수 있음
+
+##### 결제 관리
+- 결제 내역 관리를 통해서 결제 내역을 확인 할 수 있음
