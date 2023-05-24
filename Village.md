@@ -370,7 +370,6 @@ public class AbstractIntegrated {
     }
 ```
 #### Pageable 을 사용한 이유
-- 정렬된 데이터를 조회
 - DB에서 페이징 쿼리를 자동으로 생성하고 결과를 페이지 단위로 가져올 수 있음
 - 페이징을 따로 사용하지 않아도 페이지들의 정보를 받아 올 수 있기 때문에 사용
 #### Pageable 의 종류
@@ -401,6 +400,10 @@ public class AbstractIntegrated {
 - Google Maps Static API의 엔드포인트 URL을 이용하여 지도 이미지를 가져옴
 - 쿼리스트링으로 위도, 경도, 줌 값을 받아와서 지도 이미지를 가져옴
 - requestUrl 변수에는 완성된 요청 URL을 할당, 요청 URL은 url과 parameters를 결합하여 생성
+- parameters 변수에는 요청 파라미터를 할당, String.format() 메서드를 사용하여 파라미터를 생성<br>
+-> 지도의 중심 좌표, 줌 레벨, 이미지 크기, 마커, API 키를 파라미터로 사용<br> 
+-> 중심을 기준으로 좌표를 동적으로 설정을 하기 위해 String.format() 메서드를 사용
+
 #### 회원 가입<br>
 ![Honeycam 2023-05-10 20-12-05](https://github.com/clean17/Village-Front-Project/assets/118657689/c2800454-1a99-43cd-8ad8-18320145039c)
 
@@ -421,6 +424,27 @@ public class AbstractIntegrated {
 - 유효하지 않은 값이 들어오면 예외를 발생시킴
 - 예외가 발생하면 예외 처리를 해줌
 
+#### JoinDTO
+```java
+public static class JoinDTO {
+    
+    @NotEmpty(message = "name을 입력해주세요.")
+    private String name;
+    
+    @Email(message = "유효한 email 형식이 아닙니다.")
+    @NotEmpty(message = "email을 입력해주세요.")
+    private String email;
+    
+    @NotEmpty(message = "password 입력해주세요.")
+    private String password;
+}
+```
+#### Valid Check Annotation
+- @NotEmpty : null 과 "" 둘다 허용하지 않음
+- @NotBlank : null 과 "" 둘다 허용하지 않음, 공백도 허용하지 않음
+- @NotNull : null 만 허용하지 않음
+- @Email : 이메일 형식만 허용
+
 #### UserController
 ```java
     @PostMapping("/join")
@@ -435,61 +459,50 @@ public class AbstractIntegrated {
 - @Valid 어노테이션을 사용하여 검사
 - Errors 객체를 사용하여 예외를 발생시킴
 - Errors 객체는 @Valid 어노테이션을 사용한 객체 바로 뒤에 위치해야 함
-#### JoinDTO
-```java
-    public static class JoinDTO {
-        @NotEmpty(message = "name을 입력해주세요.")
-        private String name;
-        @Email(message = "유효한 email 형식이 아닙니다.")
-        @NotEmpty(message = "email을 입력해주세요.")
-        private String email;
-        @NotEmpty(message = "password 입력해주세요.")
-        private String password;
-```
-#### Valid Check Annotation
-- @NotEmpty : null 과 "" 둘다 허용하지 않음
-- @NotBlank : null 과 "" 둘다 허용하지 않음, 공백도 허용하지 않음
-- @NotNull : null 만 허용하지 않음
-- @Email : 이메일 형식만 허용
+
 
 #### 로그인<br>
 ![Honeycam 2023-05-10 20-12-21](https://github.com/clean17/Village-Front-Project/assets/118657689/7e012423-8b12-4f9d-83c5-6c61feafda38)
 
 #### UserService
 ```java
-@Transactional
-public ArrayList<String> 로그인(UserRequest.LoginDTO loginDTO) {
+public Map<String,Object> 로그인(UserRequest.LoginDTO loginDTO) {
     
-    ArrayList<String> loginViewList = new ArrayList<>();
+    try {
+        
+    Map<String, Object> loginViewMap = new HashMap();
 
     Optional<User> userOP = userRepository.findByEmail(loginDTO.getEmail());
     if (userOP.isPresent()) {
         User userPS = userOP.get();
+    
+    if (passwordEncoder.matches(loginDTO.getPassword(), userPS.getPassword())) {
+     String jwt = MyJwtProvider.create(userPS);
+        loginViewMap.put("jwt",jwt);
+        loginViewMap.put("id",String.valueOf(userPS.getId()));
+        loginViewMap.put("name",userPS.getName());
+        loginViewMap.put("email",userPS.getEmail());
+        loginViewMap.put("role",userPS.getRole());
 
-        if (passwordEncoder.matches(loginDTO.getPassword(), userPS.getPassword())) {
-            String jwt = MyJwtProvider.create(userPS);
-            loginViewList.add(jwt);
-            loginViewList.add(String.valueOf(userPS.getId()));
-            loginViewList.add(userPS.getName());
-            loginViewList.add(userPS.getEmail());
-            loginViewList.add(userPS.getRole());
+    return loginViewMap;
 
-            return loginViewList;
-    }
+}
 ```
-- 로그인을 할 때 ArrayList에 jwt, id, name, email, role을 담아서 반환
+- spring security에서 제공하는 passwordEncoder를 사용하여 암호화 시킨 비밀번호를 비교하여 로그인
+- 로그인을 할 때 ArrayMap에 jwt, id, name, email, role을 담아서 반환
+
 
 #### UserController
 ```java
 @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid UserRequest.LoginDTO loginDTO, Errors Errors) {
+    public ResponseEntity<ResponseDTO<?>> login(@RequestBody @Valid UserRequest.LoginDTO loginDTO, Errors Errors) {
 
-        ArrayList<String> loginViewList = userService.로그인(loginDTO);
+        ...
+        
+        Map<String, Object> loginViewMap = userService.로그인(loginDTO);
 
-        String jwt = (String) loginViewList.get(0);
-        UserResponse.LoginDTO loginViewDTO = new UserResponse.LoginDTO(Long.parseLong(loginViewList.get(1)) ,
-                (String) loginViewList.get(2), (String) loginViewList.get(3), (String) loginViewList.get(4));
-
+        var jwt = (String) loginViewMap.get("jwt");
+        
         ...
         
         return ResponseEntity.ok().header(MyJwtProvider.HEADER, jwt).body(responseDTO);
