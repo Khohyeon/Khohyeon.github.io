@@ -609,11 +609,10 @@ public ResponseEntity<ResponseDTO<ReservationSaveResponse>> save(
 - LocalDateTime 으로 들어오는 요청 데이터를 LocalDate 타입으로 파싱하여 받아 예약 신청 <br>
 -> 날짜는 따로 받아서 예약 신청을 하기 때문에 시간과 분만 필요함 
 #### @AuthenticationPrincipal 사용 이유
-- Spring Security에서 제공하는 어노테이션으로, 현재 인증된 사용자(principal)의 정보를 주입받는 데 사용
-- 토큰의 정보를 Authentication에 넣어서 Session 처럼 사용 하는데 로그인 정보를 가져오기 위해
-principal 객체를 사용하여 사용자의 정보를 가져오기 위해 사용
-- 이때 같이 사용 되는 것이 UserDetail 객체인데 이 객체는 사용자의 정보를 담고 있음
-- 따로 User의 권한 까지 관리하기 위해 커스텀하여 myUserDetails 객체를 만들어서 사용자의 정보와 권한을 담아서 사용
+- @AuthenticationPrincipal 이란 ? <br>
+-> Spring Security에서 제공하는 어노테이션으로, 현재 인증된 사용자(principal)의 정보를 주입받는 데 사용
+- Principal을 매개변수를 받아 사용을 할 수 있지만 @AuthenticationPrincipal 어노테이션을 사용하여 받는 이유 <br>
+-> Principal 객체 안에는 없는 데이터를 커스텀 한 MyUserDetails 객체에서 받아올 수 있기에 사용
 #### FCM 알림<br>
 ![Honeycam 2023-05-10 20-15-37](https://github.com/clean17/Village-Front-Project/assets/118657689/5ebc8f0d-4b22-46bc-aea3-6604648b4811)
 <br> 
