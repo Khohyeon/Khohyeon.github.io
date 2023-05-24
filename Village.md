@@ -533,9 +533,39 @@ public class CustomSecurityFilterManager extends AbstractHttpConfigurer<CustomSe
     }
 }
 ```
-- JwtAuthorizationFilter : Jwt 토큰을 검사하는 필터
-- JwtAuthorizationFilter는 AuthenticationManager를 사용하여 인증을 진행
+- JwtAuthorizationFilter : Jwt 토큰을 검사하는 필터를 생성하여 적용
 
+#### JwtAuthorizationFilter
+```java
+ @Override
+protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    String prefixJwt = request.getHeader(MyJwtProvider.HEADER);
+
+    if (prefixJwt == null) {
+        chain.doFilter(request, response);
+        return;
+    }
+
+    String jwt = prefixJwt.replace(MyJwtProvider.TOKEN_PREFIX, "");
+    try {
+        DecodedJWT decodedJWT = MyJwtProvider.verify(jwt);
+        Long id = decodedJWT.getClaim("id").asLong();
+        String role = decodedJWT.getClaim("role").asString();
+    
+        User user = User.builder().id(id).role(role).build();
+        MyUserDetails myUserDetails = new MyUserDetails(user);
+        Authentication authentication =
+        new UsernamePasswordAuthenticationToken(
+            myUserDetails,
+            myUserDetails.getPassword(),
+            myUserDetails.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+```        
+- MyJwtProvider.verify(jwt) : jwt 토큰을 검사하는 메서드 -> JWT.require(Algorithm.HMAC512(SECRET)) 검사
+- 검사가 완료되면 User 객체를 생성하여 MyUserDetails 객체를 생성
+- MyUserDetails 객체를 사용하여 UsernamePasswordAuthenticationToken 객체를 생성
+- SecurityContextHolder의 context에 저장
 
 
 #### UserController
@@ -579,6 +609,7 @@ public ResponseEntity<ResponseDTO<ReservationSaveResponse>> save(
 - LocalDateTime 으로 들어오는 요청 데이터를 LocalDate 타입으로 파싱하여 받아 예약 신청 <br>
 -> 날짜는 따로 받아서 예약 신청을 하기 때문에 시간과 분만 필요함 
 #### @AuthenticationPrincipal 사용 이유
+- Spring Security에서 제공하는 어노테이션으로, 현재 인증된 사용자(principal)의 정보를 주입받는 데 사용
 - 토큰의 정보를 Authentication에 넣어서 Session 처럼 사용 하는데 로그인 정보를 가져오기 위해
 principal 객체를 사용하여 사용자의 정보를 가져오기 위해 사용
 - 이때 같이 사용 되는 것이 UserDetail 객체인데 이 객체는 사용자의 정보를 담고 있음
