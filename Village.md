@@ -689,15 +689,14 @@ public Host 호스트신청(HostSaveRequest hostSaveDto) {
             }
 ```
 
-- 공간 등록 시 AWS S3 API이용 하여 이미지 파일을 S3에 저장
+- 공간 등록 시 AWS SDK 를 이용하여 s3(AWS) 에 업로드 한 후 결과를 url로 받음 <br>
 - S3에 저장된 이미지 파일의 URL을 DB에 저장
-- DB에 저장된 이미지 파일의 URL을 통해 이미지 파일을 불러옴
-- 불러온 이미지 파일을 Base64로 인코딩하여 앱에 전달
+- DB에 저장된 이미지 파일의 URL을 앱으로 전달하고 앱에서 URL을 통해 파일을 불러옴
+- 이때 URL은 Base64로 인코딩하여 앱에 전달됨
 - 앱에서 Base64로 인코딩된 이미지 파일을 디코딩하여 이미지 파일을 불러옴
 
 ![Honeycam 2023-05-10 20-18-08](https://github.com/clean17/Village-Front-Project/assets/118657689/deb96fa9-7540-492e-acb9-5242ad903339)
-- 공간 등록시 해시태그 , 편의 시설 , 파일, 요일, 카테고리 , 공간 정보를 저장하기 위해 각각의 Repository를 생성하고 Service를 생성하여 저장하는 로직을 구현
-- 공간 정보를 저장하기 위해 placeJpaRepository를 생성하고 PlaceService를 생성하여 저장하는 로직을 구현
+- 공간 등록시 해시태그 , 편의 시설 , 파일, 요일, 카테고리 , 공간 정보를 저장하기 위해 각각의 Entity에 save 하는 로직을 구현
 
 #### 공간 insert
 ```java
