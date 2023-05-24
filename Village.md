@@ -77,8 +77,8 @@ Notion : 프로젝트 일정 관리 및 회의록을 작성할 수 있습니다.
 - FCM을 사용한 이유는 실시간으로 데이터 전송을 지원을 하여 사용자(Host)에게 빠르게 알림을 전송할 수 있기에 사용<br>
 - 앱을 처음 킬 때 firebase에 요청을 하여 토큰을 받고 앱에서 서버로 토큰을 보내면 서버에서 firebase로 토큰을 검증하고
 검증이 됐다면 DB에 저장을 시켜 토큰 값을 보관<br>
-- 로그인 시 토큰을 받아와서 FCM 테이블에 사용자의 id로 저장을 시킴 
-- 각 사용자의 FCM 토큰을 부여 하고 사용자의 토큰을 DB에 저장하면 개별 사용자를 식별하고 관리 가능 
+- 로그인 시 토큰을 받아와서 FCM 테이블에 사용자의 id를 업데이트 시킴 
+- 저장된 FCM 토큰을 이용하여 사용자들에게 알림을 보냄
 
 요청을 할 때의 loginDTO
 ```java
@@ -87,6 +87,26 @@ public static class LoginDTO {
     ...
     
     private String targetToken;
+    }
+```
+
+#### 토큰을 DB 에 저장 시키기
+```java
+@PostMapping("/fcm/token")
+    public ResponseEntity<?> pushMessage(@RequestBody String token) throws Exception {
+
+        if (token != null) {
+
+            Fcm fcm = new Fcm();
+            String targetToken = token.split("=")[1];
+
+            Optional<Fcm> targetTokenOptional = fcmRepository.findByTargetToken(targetToken);
+
+            if (targetTokenOptional.isEmpty()) {
+                fcm.setTargetToken(targetToken);
+                fcmRepository.save(fcm);
+            }
+        ...
     }
 ```
 
@@ -104,8 +124,8 @@ public static class LoginDTO {
 #### 토큰을 활용하여 해당 사용자에게 알림 보내는 방법
 - 사용자 앱 실행 시 푸시 알림을 받을 수 있는 토큰을 생성 
 - 토큰을 생성하고 DB에 저장
-- 알림을 보낼 때 title과 content 데이터를 준비하고 토큰을 가지고 푸시 알림 플랫폼에 전송
-- 푸시 알림 플랫폼에서는 토큰을 확인하고 해당 토큰을 가진 사용자에게 알림을 전송
+- 알림을 보낼 때 title과 content 데이터를 준비하고 토큰을 가지고 firebase에 전송
+- firebase에서는 토큰을 확인하고 해당 토큰을 가진 앱에게 알림을 전송
 
 ```java
 public void sendMessageTo(String targetToken, String title, String body) throws IOException {
@@ -145,17 +165,17 @@ public void sendMessageTo(String targetToken, String title, String body) throws 
 ```
 #### 파일을 AWS S3 버킷에 저장하는 과정
 
-- S3 SDK 를 이용하여 파일을 aws sdk 를 이용하여 s3(AWS) 에 업로드 하여 파일을 url로 받아 앱으로 전송 <br>
+- AWS SDK 를 이용하여 s3(AWS) 에 업로드 한 후 결과를 url로 받음 <br>
 - S3에 저장된 이미지 파일의 URL을 DB에 저장
-- DB에 저장된 이미지 파일의 URL을 통해 이미지 파일을 불러옴
-- 불러온 이미지 파일을 Base64로 인코딩하여 앱에 전달
+- DB에 저장된 이미지 파일의 URL을 앱으로 전달하고 앱에서 URL을 통해 파일을 불러옴
+- 이때 URL은 Base64로 인코딩하여 앱에 전달됨
 - 앱에서 Base64로 인코딩된 이미지 파일을 디코딩하여 이미지 파일을 불러옴
 - 파일은 그냥 그대로 DB에 넣어 사용을 할 수 있는데 S3를 사용하는 이유는 ?? <br>
--> DB에 파일을 저장하면 파일 크기에 제한이 있기에 DB성능에 영향을 줄 수 있다. 
+-> DB에 파일을 저장하면 파일 크기에 제한이 있기에 DB성능에 영향을 줄 수 있다. <br>
 -> 안정적이고 신뢰할 수 있는 서비스로 인정받고 있어 사용을 했고 용량이 가득차면 자동으로 확장되어 유연하게 대응할 수 있다는 점에서 사용 <br>
 
 > ## BootPay - 한국의 온라인 결제 서비스 플랫폼
-결제 모듈을 간편한 결제 플로우를 지닌 부트페이를 사용했고 결제 검증을 하여 부적절한 요청이 왔을 때 해결 <br>
+결제 모듈은 간편한 결제 플로우를 지닌 부트페이를 사용했고 결제 검증을 하여 부적절한 요청이 왔을 때 해결 <br>
 - 앱에서 결제를 시도 할 때 받아오는 request 데이터를 1차적으로 DB에 주문 아이디, 주문 이름, 가격 저장
 
 ```java
@@ -283,8 +303,10 @@ public class AbstractIntegrated {
     }
 ```
 
-- 테스트 코드를 작성할 때 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class}) 를 사용하여 Restdocs 를 사용하겠다고 선언
-- @BeforeEach 를 사용하여 테스트 코드를 실행하기 전에 setUp 실행
+- 테스트 코드를 작성할 때 @ExtendWith({RestDocumentationExtension.class}) 를 사용하여 Restdocs 를 사용하겠다고 선언
+- @ExtendWith({SpringExtension.class}) 를 사용하여 Spring TestContext Framework와 Junit5와 통합하여 사용
+- @BeforeEach 를 사용하여 테스트 코드를 실행하기 전에 setUp 실행 <br>
+-> @BeforeEach를 사용한 이유는 테스트 코드를 실행하기 전에 mockMvc를 생성하고 문서화를 하기 위해서 사용
 - setUp 메서드에서 MockMvc 를 사용하여 mockMvc 를 생성
 - mockMvc 를 생성할 때 RestDocumentationContextProvider 를 사용하여 문서화를 하겠다고 선언<br>
 -> 테스트 코드에서 생성된 문서의 저장 위치, 문서에 대한 메타데이터, 문서의 형식 등을 정의하고 사용 가능 
